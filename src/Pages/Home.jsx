@@ -158,9 +158,7 @@ const Home = () => {
             {/* Content based on active tab */}
             <div className="relative">
               {/* Regular Bowls Plans */}
-              <div className={`transition-all duration-700 ease-in-out transform ${
-                activeTab === 'regular' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8 pointer-events-none absolute'
-              }`}>
+              <div className={activeTab === 'regular' ? 'block' : 'hidden'}>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Trial Plan */}
               <div className={`bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 group ${
@@ -285,9 +283,7 @@ const Home = () => {
               </div>
 
               {/* Mini Bowls Content */}
-              <div className={`transition-all duration-700 ease-in-out transform ${
-                activeTab === 'mini' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8 pointer-events-none absolute'
-              }`}>
+              <div className={activeTab === 'mini' ? 'block' : 'hidden'}>
                 {/* Mini Bowls Header */}
                 <div className="text-center mb-12">
                   <div className="inline-flex items-center gap-2 px-6 py-3 bg-purple-100 text-purple-700 text-sm font-semibold rounded-full mb-6">
@@ -616,8 +612,6 @@ const Home = () => {
 
       {/* Custom CSS for animations */}
       <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
-        
         .animate-fade-in {
           animation: fadeIn 1s ease-out;
         }
