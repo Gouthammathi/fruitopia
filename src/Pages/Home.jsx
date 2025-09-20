@@ -4,39 +4,90 @@ import { useApp } from '../context/AppContext'
 import { products, productCategories } from '../data/products'
 import ProductCard from '../components/ProductCard'
 
+// Image carousel component for plan cards
+const PlanImageCarousel = ({ images, planType }) => {
+  const [currentImage, setCurrentImage] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [images.length])
+
+  return (
+    <div className="relative h-48 overflow-hidden rounded-t-2xl bg-gradient-to-br from-green-50 to-green-100">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="w-full h-full" style={{
+          backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%2316a34a\" fill-opacity=\"0.1\"%3E%3Ccircle cx=\"5\" cy=\"5\" r=\"5\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')",
+          backgroundRepeat: 'repeat'
+        }}></div>
+      </div>
+      
+      {/* Image slides */}
+      <div className="relative h-full flex items-center justify-center">
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute transition-all duration-500 transform ${
+              index === currentImage 
+                ? 'opacity-100 scale-100 translate-x-0' 
+                : index < currentImage 
+                  ? 'opacity-0 scale-95 -translate-x-8'
+                  : 'opacity-0 scale-95 translate-x-8'
+            }`}
+          >
+            <div className="text-8xl filter drop-shadow-lg">{image}</div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Carousel indicators */}
+      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentImage(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              index === currentImage ? 'bg-green-500 scale-125' : 'bg-white/60 hover:bg-white/80'
+            }`}
+          />
+        ))}
+      </div>
+      
+      {/* Plan type badge */}
+      <div className="absolute top-3 right-3">
+        <span className="bg-white/90 backdrop-blur-sm text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+          {planType}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 const Home = () => {
-  const [isVisible, setIsVisible] = useState({})
   const [activeTab, setActiveTab] = useState('regular')
   const navigate = useNavigate()
   const { cartItemCount, wishlistCount } = useApp()
 
-  // Get featured products
+  // Get featured products and categories
   const featuredProducts = products.filter(product => product.featured).slice(0, 4)
   const featuredCategories = productCategories.filter(cat => cat.featured)
 
-  useEffect(() => {
-    // Intersection Observer for scroll animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
+  // Handle plan selection
+  const handlePlanSelect = (planType, planName, price, duration) => {
+    const planData = {
+      value: planType,
+      name: planName,
+      price: price,
+      duration: duration
     }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setIsVisible(prev => ({
-            ...prev,
-            [entry.target.dataset.animate]: true
-          }))
-        }
-      })
-    }, observerOptions)
-
-    const animateElements = document.querySelectorAll('[data-animate]')
-    animateElements.forEach((el) => observer.observe(el))
-
-    return () => observer.disconnect()
-  }, [])
+    
+    navigate('/checkout', {
+      state: { plan: planData }
+    })
+  }
 
   return (
     <div className="overflow-hidden">
@@ -111,11 +162,9 @@ const Home = () => {
       </section>
 
       {/* Plans Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-green-50" data-animate="plans">
+      <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-green-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`transition-all duration-1000 transform ${
-            isVisible.plans ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}>
+          <div>
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 px-6 py-3 bg-green-100 text-green-700 text-sm font-semibold rounded-full mb-6">
                 <span>🎯</span>
@@ -134,9 +183,9 @@ const Home = () => {
               <div className="bg-white rounded-2xl p-2 shadow-lg border border-gray-200">
                 <button
                   onClick={() => setActiveTab('regular')}
-                  className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  className={`px-8 py-3 rounded-xl font-semibold ${
                     activeTab === 'regular'
-                      ? 'bg-green-500 text-white shadow-lg transform scale-105'
+                      ? 'bg-green-500 text-white shadow-lg'
                       : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
                   }`}
                 >
@@ -144,9 +193,9 @@ const Home = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab('mini')}
-                  className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  className={`px-8 py-3 rounded-xl font-semibold ${
                     activeTab === 'mini'
-                      ? 'bg-green-500 text-white shadow-lg transform scale-105'
+                      ? 'bg-green-500 text-white shadow-lg'
                       : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
                   }`}
                 >
@@ -159,235 +208,245 @@ const Home = () => {
             <div className="relative">
               {/* Regular Bowls Plans */}
               <div className={activeTab === 'regular' ? 'block' : 'hidden'}>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
               {/* Trial Plan */}
-              <div className={`bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 group ${
-                isVisible.plans ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-              }`} style={{transitionDelay: '0ms'}}>
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2 font-['Poppins']">Trial</h3>
-                  <p className="text-sm text-gray-500 mb-4">(Monday-Saturday)</p>
-                  <div className="text-3xl font-bold text-green-600 mb-2">₹1,599 <span className="text-base font-normal text-gray-500">/ 2 weeks</span></div>
+              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl border border-gray-100 group overflow-hidden">
+                <PlanImageCarousel 
+                  images={['🍉', '🥝', '🍇', '🍓', '🥭']}
+                  planType="Trial Plan"
+                />
+                <div className="p-8">
+                  <div className="text-center mb-6">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 font-['Poppins']">Trial</h3>
+                    <p className="text-sm text-gray-500 mb-4">(Monday-Saturday)</p>
+                    <div className="text-3xl font-bold text-green-600 mb-2">₹1,599 <span className="text-base font-normal text-gray-500">/ 2 weeks</span></div>
+                  </div>
+                  
+                  <p className="text-gray-600 text-sm leading-relaxed mb-6 font-['Inter']">
+                    Try Before You Commit 🍉🥝 Not ready for a full-month plan? The Trail Plan is perfect for a 2-week taste of fresh, handpicked fruit bowls, Ideal for testing a healthy habit or enjoying a flexible option—nourish your body with nature's best, hassle-free 🌿✨
+                  </p>
+                  
+                  <div className="space-y-3 mb-8">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">5 Variety of fruits</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">1 Vegetable</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">1 Nut / Sprouts</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700 font-semibold">600-700 grams</span>
+                    </div>
+                  </div>
+                  
+                  <button 
+                    onClick={() => handlePlanSelect('trial', 'Trial Plan', 1599, 0.5)}
+                    className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full hover:from-green-600 hover:to-green-700 transform group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    Choose Trial Plan
+                  </button>
                 </div>
-                
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 font-['Inter']">
-                  Try Before You Commit 🍉🥝 Not ready for a full-month plan? The Trail Plan is perfect for a 2-week taste of fresh, handpicked fruit bowls, Ideal for testing a healthy habit or enjoying a flexible option—nourish your body with nature's best, hassle-free 🌿✨
-                </p>
-                
-                <div className="space-y-3 mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">5 Variety of fruits</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">1 Vegetable</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">1 Nut / Sprouts</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700 font-semibold">600-700 grams</span>
-                  </div>
-                </div>
-                
-                <button className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full hover:from-green-600 hover:to-green-700 transform group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-                  Choose Trial Plan
-                </button>
               </div>
 
               {/* Standard Plan - Most Popular */}
-              <div className={`bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border-2 border-green-500 group relative ${
-                isVisible.plans ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-              }`} style={{transitionDelay: '150ms'}}>
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                    Most Popular
+              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl border-2 border-green-500 group relative overflow-visible">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
+                  <span className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full text-sm font-semibold shadow-lg">
+                    ⭐ Most Popular
                   </span>
                 </div>
                 
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2 font-['Poppins']">Standard</h3>
-                  <p className="text-sm text-gray-500 mb-4">(Monday-Saturday)</p>
-                  <div className="text-3xl font-bold text-green-600 mb-2">₹2,799 <span className="text-base font-normal text-gray-500">/ 1 month</span></div>
+                <PlanImageCarousel 
+                  images={['🍎', '🥭', '🍊', '🍇', '🥥']}
+                  planType="Standard Plan"
+                />
+                <div className="p-8">
+                  <div className="text-center mb-6">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 font-['Poppins']">Standard</h3>
+                    <p className="text-sm text-gray-500 mb-4">(Monday-Saturday)</p>
+                    <div className="text-3xl font-bold text-green-600 mb-2">₹2,799 <span className="text-base font-normal text-gray-500">/ 1 month</span></div>
+                  </div>
+                  
+                  <p className="text-gray-600 text-sm leading-relaxed mb-6 font-['Inter']">
+                    Fresh & Nutritious, Every Day 🍎🥭 New to fruit bowls? Our Standard Plan delivers a curated mix of fresh, flavorful fruits from Monday to Saturday—perfect for building or maintaining a healthy habit. A simple, delicious way to enjoy nature's best. 🌿✨
+                  </p>
+                  
+                  <div className="space-y-3 mb-8">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">5 Variety of fruits</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">1 Vegetable</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">1 Nut / Sprouts</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700 font-semibold">600-700 grams</span>
+                    </div>
+                  </div>
+                  
+                  <button 
+                    onClick={() => handlePlanSelect('standard', 'Standard Plan', 2799, 1)}
+                    className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full hover:from-green-600 hover:to-green-700 transform group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    Choose Standard Plan
+                  </button>
                 </div>
-                
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 font-['Inter']">
-                  Fresh & Nutritious, Every Day 🍎🥭 New to fruit bowls? Our Standard Plan delivers a curated mix of fresh, flavorful fruits from Monday to Saturday—perfect for building or maintaining a healthy habit. A simple, delicious way to enjoy nature's best. 🌿✨
-                </p>
-                
-                <div className="space-y-3 mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">5 Variety of fruits</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">1 Vegetable</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">1 Nut / Sprouts</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700 font-semibold">600-700 grams</span>
-                  </div>
-                </div>
-                
-                <button className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full hover:from-green-600 hover:to-green-700 transform group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-                  Choose Standard Plan
-                </button>
               </div>
 
               {/* Corporate Plan */}
-              <div className={`bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 group ${
-                isVisible.plans ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-              }`} style={{transitionDelay: '300ms'}}>
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2 font-['Poppins']">Corporate</h3>
-                  <p className="text-sm text-gray-500 mb-4">(Monday-Friday)</p>
-                  <div className="text-3xl font-bold text-green-600 mb-2">₹2,299 <span className="text-base font-normal text-gray-500">/ 1 month</span></div>
+              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl border border-gray-100 group overflow-hidden">
+                <PlanImageCarousel 
+                  images={['🍇', '🍊', '🥥', '🍎', '🍒']}
+                  planType="Corporate Plan"
+                />
+                <div className="p-8">
+                  <div className="text-center mb-6">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 font-['Poppins']">Corporate</h3>
+                    <p className="text-sm text-gray-500 mb-4">(Monday-Friday)</p>
+                    <div className="text-3xl font-bold text-green-600 mb-2">₹2,299 <span className="text-base font-normal text-gray-500">/ 1 month</span></div>
+                  </div>
+                  
+                  <p className="text-gray-600 text-sm leading-relaxed mb-6 font-['Inter']">
+                    Fuel Your Workday 🍇🍊 Our Corporate Plan keeps professionals energized & productive with fresh, curated fruit bowls—a hassle-free way to enjoy healthy breaks at work. Perfect for individuals & teams, delivered right to your office. 🚀✨
+                  </p>
+                  
+                  <div className="space-y-3 mb-8">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">5 Variety of fruits</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">1 Vegetable</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700">1 Nut / Sprouts</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-gray-700 font-semibold">600-700 grams</span>
+                    </div>
+                  </div>
+                  
+                  <button 
+                    onClick={() => handlePlanSelect('corporate', 'Corporate Plan', 2299, 1)}
+                    className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full hover:from-green-600 hover:to-green-700 transform group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    Choose Corporate Plan
+                  </button>
                 </div>
-                
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 font-['Inter']">
-                  Fuel Your Workday 🍇🍊 Our Corporate Plan keeps professionals energized & productive with fresh, curated fruit bowls—a hassle-free way to enjoy healthy breaks at work. Perfect for individuals & teams, delivered right to your office. 🚀✨
-                </p>
-                
-                <div className="space-y-3 mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">5 Variety of fruits</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">1 Vegetable</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">1 Nut / Sprouts</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700 font-semibold">600-700 grams</span>
-                  </div>
-                </div>
-                
-                <button className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full hover:from-green-600 hover:to-green-700 transform group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-                  Choose Corporate Plan
-                </button>
               </div>
                 </div>
               </div>
 
               {/* Mini Bowls Content */}
               <div className={activeTab === 'mini' ? 'block' : 'hidden'}>
-                {/* Mini Bowls Header */}
-                <div className="text-center mb-12">
-                  <div className="inline-flex items-center gap-2 px-6 py-3 bg-purple-100 text-purple-700 text-sm font-semibold rounded-full mb-6">
-                    <span>🥣</span>
-                    <span>Perfect Size, Perfect Taste</span>
-                  </div>
-                  <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 font-['Poppins']">
-                    Mini Bowls Collection
-                  </h3>
-                  <p className="text-lg text-gray-600 max-w-2xl mx-auto font-['Inter']">
-                    Perfect for kids, light eaters, or anyone looking for a quick healthy snack. 
-                    Smaller portions, same great taste and nutrition!
-                  </p>
-                </div>
-                
-                {/* Mini Bowl Plans Grid */}
-                <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                {/* Mini Bowl Plans Grid - 2 columns for mini bowls */}
+                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto pt-8">
                   {/* Mini Bowl Standard */}
-                  <div className={`bg-gradient-to-br from-white to-purple-50 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border-2 border-purple-100 group relative overflow-hidden ${
-                    isVisible.plans ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-                  }`} style={{transitionDelay: '200ms'}}>
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-200 to-pink-200 rounded-full -translate-y-16 translate-x-16 opacity-20"></div>
+                  <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl border-2 border-green-500 group relative overflow-visible">
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
+                      <span className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full text-sm font-semibold shadow-lg">
+                        ⭐ Most Popular Mini
+                      </span>
+                    </div>
                     
-                    <div className="relative z-10">
+                    <PlanImageCarousel 
+                      images={['🥣', '🍇', '🍌', '🍓', '🥝']}
+                      planType="Mini Standard"
+                    />
+                    <div className="p-8">
                       <div className="text-center mb-6">
-                        <div className="text-4xl mb-3">🥣</div>
-                        <h4 className="text-2xl font-bold text-gray-900 mb-2 font-['Poppins']">Mini Bowl - Standard</h4>
-                        <p className="text-sm text-purple-600 mb-4 font-medium">(Monday-Saturday)</p>
-                        <div className="text-3xl font-bold text-purple-600 mb-2">₹1,799 
-                          <span className="text-base font-normal text-gray-500">/ 1 month</span>
-                        </div>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2 font-['Poppins']">Mini Bowl - Standard Plan</h3>
+                        <p className="text-sm text-gray-500 mb-4">(Monday-Saturday)</p>
+                        <div className="text-3xl font-bold text-green-600 mb-2">₹1,799 <span className="text-base font-normal text-gray-500">/ 1 month</span></div>
                       </div>
                       
                       <p className="text-gray-600 text-sm leading-relaxed mb-6 font-['Inter']">
-                        🥣 Fresh & Light, Every Day! Perfect for kids, light eaters, or anyone craving a quick, healthy snack. 
-                        A fresh and fun way to add fruits to your day — light, tasty, and just enough! 🍓💚
+                        🥣 Mini Bowl – Fresh & Light, Every Day 🍇🍌 New to fruit bowls or prefer smaller portions? Our Mini Bowl is perfect for a quick, healthy boost—fresh fruits, just the right size, delivered Monday to Saturday. 🥗💚 💡 Perfect For: Kids, light eaters, or anyone craving a quick, healthy snack. A fresh and fun way to add fruits to your day — light, tasty, and just enough! 🍓💚
                       </p>
                       
                       <div className="space-y-3 mb-8">
                         <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                           <span className="text-sm text-gray-700">3 Variety of fruits</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                           <span className="text-sm text-gray-700">1 Vegetable</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                           <span className="text-sm text-gray-700">1 Nut / Sprouts</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                          <span className="text-sm text-gray-700 font-semibold">250-350 grams</span>
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <span className="text-sm text-gray-700 font-semibold">250 - 350 grams</span>
                         </div>
                       </div>
                       
-                      <button className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-full hover:from-purple-600 hover:to-purple-700 transform group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                      <button 
+                        onClick={() => handlePlanSelect('mini-standard', 'Mini Bowl Standard Plan', 1799, 1)}
+                        className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full hover:from-green-600 hover:to-green-700 transform group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                      >
                         Choose Mini Bowl Standard
                       </button>
                     </div>
                   </div>
 
                   {/* Mini Bowl Corporate */}
-                  <div className={`bg-gradient-to-br from-white to-blue-50 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border-2 border-blue-100 group relative overflow-hidden ${
-                    isVisible.plans ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-                  }`} style={{transitionDelay: '400ms'}}>
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-200 to-indigo-200 rounded-full -translate-y-16 translate-x-16 opacity-20"></div>
-                    
-                    <div className="relative z-10">
+                  <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl border border-gray-100 group overflow-hidden">
+                    <PlanImageCarousel 
+                      images={['🥣', '🍊', '💼', '🍇', '🍓']}
+                      planType="Mini Corporate"
+                    />
+                    <div className="p-8">
                       <div className="text-center mb-6">
-                        <div className="text-4xl mb-3">🥣</div>
-                        <h4 className="text-2xl font-bold text-gray-900 mb-2 font-['Poppins']">Mini Bowl - Corporate</h4>
-                        <p className="text-sm text-blue-600 mb-4 font-medium">(Monday-Friday)</p>
-                        <div className="text-3xl font-bold text-blue-600 mb-2">₹1,599 
-                          <span className="text-base font-normal text-gray-500">/ 1 month</span>
-                        </div>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2 font-['Poppins']">Mini Bowl - Corporate Plan</h3>
+                        <p className="text-sm text-gray-500 mb-4">(Monday-Friday)</p>
+                        <div className="text-3xl font-bold text-green-600 mb-2">₹1,599 <span className="text-base font-normal text-gray-500">/ 1 month</span></div>
                       </div>
                       
                       <p className="text-gray-600 text-sm leading-relaxed mb-6 font-['Inter']">
-                        🥣 Fresh & Light, Weekdays Only! Perfect for busy professionals who want a quick, 
-                        healthy boost during weekdays. Stay energized — light, tasty, and just enough! 🍓💼
+                        🥣 Mini Bowl – Fresh & Light, Weekdays Only 🍇🍌 New to fruit bowls or prefer smaller portions? Our Mini Bowl (Corporate Plan) is perfect for a quick, healthy boost — fresh fruits, just the right size, delivered Monday to Friday. 🥗💼 💡 Perfect For: Kids, light eaters, or anyone craving a quick, healthy snack during busy weekdays. A fresh and fun way to stay energized — light, tasty, and just enough! 🍓💚
                       </p>
                       
                       <div className="space-y-3 mb-8">
                         <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                           <span className="text-sm text-gray-700">3 Variety of fruits</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                           <span className="text-sm text-gray-700">1 Vegetable</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                           <span className="text-sm text-gray-700">1 Nut / Sprouts</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span className="text-sm text-gray-700 font-semibold">250-350 grams</span>
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <span className="text-sm text-gray-700 font-semibold">250 - 350 grams</span>
                         </div>
                       </div>
                       
-                      <button className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-full hover:from-blue-600 hover:to-blue-700 transform group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                      <button 
+                        onClick={() => handlePlanSelect('mini-corporate', 'Mini Bowl Corporate Plan', 1599, 1)}
+                        className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full hover:from-green-600 hover:to-green-700 transform group-hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                      >
                         Choose Mini Bowl Corporate
                       </button>
                     </div>
@@ -400,11 +459,9 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white" data-animate="features" >
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`transition-all duration-1000 transform ${
-            isVisible.features ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}>
+          <div>
             <div className="text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 font-['Poppins']">
                 Why Choose Fruitopia?
@@ -432,10 +489,8 @@ const Home = () => {
                   description: "Nutritious & naturally sweet, perfect for a healthy lifestyle"
                 }
               ].map((feature, index) => (
-                <div key={index} className={`bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 group ${
-                  isVisible.features ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-20'
-                }`} style={{transitionDelay: `${index * 200}ms`}}>
-                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">{feature.icon}</div>
+                <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl border border-gray-100 group">
+                  <div className="text-5xl mb-6">{feature.icon}</div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4 font-['Poppins']">{feature.title}</h3>
                   <p className="text-gray-600 leading-relaxed font-['Inter']">{feature.description}</p>
                 </div>
@@ -446,11 +501,9 @@ const Home = () => {
       </section>
 
       {/* Category Navigation Section */}
-      <section className="py-20 bg-white" data-animate="categories">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`transition-all duration-1000 transform ${
-            isVisible.categories ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}>
+          <div>
             <div className="text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 font-['Poppins']">
                 Shop by Category
@@ -464,25 +517,22 @@ const Home = () => {
               {featuredCategories.map((category, index) => (
                 <div
                   key={category.id}
-                  className={`bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer group ${
-                    isVisible.categories ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-                  }`}
-                  style={{transitionDelay: `${index * 200}ms`}}
+                  className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 border border-gray-100 shadow-lg hover:shadow-xl cursor-pointer group"
                   onClick={() => navigate(`/products?category=${category.id}`)}
                 >
-                  <div className="text-6xl mb-6 transform group-hover:scale-110 transition-transform duration-300 text-center">
+                  <div className="text-6xl mb-6 text-center">
                     {category.image}
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center font-['Poppins'] group-hover:text-green-600 transition-colors">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center font-['Poppins'] group-hover:text-green-600">
                     {category.name}
                   </h3>
                   <p className="text-gray-600 text-center leading-relaxed font-['Inter'] mb-6">
                     {category.description}
                   </p>
                   <div className="text-center">
-                    <span className="inline-flex items-center gap-2 text-green-600 font-semibold group-hover:gap-3 transition-all duration-300">
+                    <span className="inline-flex items-center gap-2 text-green-600 font-semibold">
                       Explore Category
-                      <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </span>
@@ -494,7 +544,7 @@ const Home = () => {
             <div className="text-center mt-12">
               <button
                 onClick={() => navigate('/products')}
-                className="px-10 py-4 bg-white border-2 border-green-500 text-green-600 font-semibold rounded-full hover:bg-green-500 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg"
+                className="px-10 py-4 bg-white border-2 border-green-500 text-green-600 font-semibold rounded-full hover:bg-green-500 hover:text-white shadow-lg"
               >
                 View All Categories
               </button>
@@ -504,11 +554,9 @@ const Home = () => {
       </section>
 
       {/* Products Section */}
-      <section className="py-20 bg-gray-50" data-animate="products">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`transition-all duration-1000 transform ${
-            isVisible.products ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}>
+          <div>
             <div className="text-center mb-16">
               <span className="inline-block px-6 py-3 bg-green-100 text-green-700 text-sm font-semibold rounded-full mb-6">
                 🏆 Our Best Sellers
@@ -523,16 +571,14 @@ const Home = () => {
             
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {featuredProducts.map((product, index) => (
-                <div key={product.id} className={`group ${
-                  isVisible.products ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-                }`} style={{transitionDelay: `${index * 150}ms`}}>
+                <div key={product.id} className="group">
                   <ProductCard product={product} />
                 </div>
               ))}
             </div>
             
             <div className="text-center mt-12">
-              <button className="px-10 py-4 bg-white border-2 border-green-500 text-green-600 font-semibold rounded-full hover:bg-green-500 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <button className="px-10 py-4 bg-white border-2 border-green-500 text-green-600 font-semibold rounded-full hover:bg-green-500 hover:text-white shadow-lg">
                 View All Products
               </button>
             </div>
@@ -541,7 +587,7 @@ const Home = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 bg-gradient-to-r from-green-500 to-green-600 relative overflow-hidden" data-animate="cta">
+      <section className="py-20 bg-gradient-to-r from-green-500 to-green-600 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="w-full h-full" style={{
             backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.1\"%3E%3Cpath d=\"M20 20c0 11.046-8.954 20-20 20s-20-8.954-20-20 8.954-20 20-20 20 8.954 20 20z\"/%3E%3C/g%3E%3C/svg%3E')",
@@ -550,9 +596,7 @@ const Home = () => {
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className={`transition-all duration-1000 transform text-white ${
-            isVisible.cta ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}>
+          <div className="text-white">
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-['Poppins']">
               Ready to Get Fresh Fruits?
             </h2>
@@ -561,10 +605,10 @@ const Home = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <button className="px-10 py-4 bg-white text-green-600 text-lg font-bold rounded-full hover:bg-yellow-400 hover:text-green-700 transition-all duration-300 transform hover:scale-105 shadow-2xl">
+              <button className="px-10 py-4 bg-white text-green-600 text-lg font-bold rounded-full hover:bg-yellow-400 hover:text-green-700 shadow-2xl">
                 Order Now 🛒
               </button>
-              <button className="px-10 py-4 bg-transparent border-2 border-white text-white text-lg font-semibold rounded-full hover:bg-white hover:text-green-600 transition-all duration-300 transform hover:scale-105">
+              <button className="px-10 py-4 bg-transparent border-2 border-white text-white text-lg font-semibold rounded-full hover:bg-white hover:text-green-600">
                 Browse Products
               </button>
             </div>
@@ -573,11 +617,9 @@ const Home = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 bg-gray-50" data-animate="contact">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`transition-all duration-1000 transform ${
-            isVisible.contact ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-          }`}>
+          <div>
             <div className="text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 font-['Poppins']">
                 Get in Touch
@@ -588,19 +630,19 @@ const Home = () => {
             </div>
             
             <div className="grid md:grid-cols-3 gap-8 text-center">
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl">
                 <div className="text-4xl mb-4">📞</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 font-['Poppins']">Call Us</h3>
                 <p className="text-gray-600 font-['Inter']">+91 98765 43210</p>
               </div>
               
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl">
                 <div className="text-4xl mb-4">✉️</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 font-['Poppins']">Email Us</h3>
                 <p className="text-gray-600 font-['Inter']">hello@fruitopia.com</p>
               </div>
               
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl">
                 <div className="text-4xl mb-4">🚚</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 font-['Poppins']">Delivery Areas</h3>
                 <p className="text-gray-600 font-['Inter']">Mumbai, Thane & Navi Mumbai</p>
