@@ -68,6 +68,23 @@ const Header = () => {
                 {item.label}
               </NavLink>
             ))}
+            
+            {/* Games Button */}
+            <div className="relative group">
+              <button
+                onClick={() => window.open('http://fruitopiaa.vercel.app', '_blank')}
+                className="px-4 py-2 rounded-xl transition-all duration-200 hover:scale-105 font-['Inter'] text-gray-700 hover:text-purple-600 hover:bg-purple-50 flex items-center gap-2"
+              >
+                <span>🎮</span>
+                <span>Games</span>
+              </button>
+              
+              {/* Tooltip */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                Fruitopia Games
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+              </div>
+            </div>
           </nav>
 
           {/* Desktop Actions */}
@@ -173,6 +190,22 @@ const Header = () => {
               {item.label}
             </NavLink>
           ))}
+          
+          {/* Mobile Games Button */}
+          <button
+            onClick={() => {
+              setIsMenuOpen(false)
+              window.open('http://fruitopiaa.vercel.app', '_blank')
+            }}
+            className="block w-full text-left px-4 py-3 rounded-xl transition-colors font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+          >
+            <span className="flex items-center gap-2">
+              <span>🎮</span>
+              <span>Games</span>
+              <span className="text-xs text-gray-500">(Fruitopia Games)</span>
+            </span>
+          </button>
+          
           <div className="pt-4 border-t border-gray-200">
             <button 
               onClick={() => {
