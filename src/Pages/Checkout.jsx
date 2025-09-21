@@ -7,8 +7,9 @@ const Checkout = () => {
   const location = useLocation()
   const { cart, cartTotal, clearCart } = useApp()
   
-  // Get subscription plan from navigation state or cart
-  const subscriptionPlan = location.state?.plan || null
+  // Get plan from cart if exists
+  const planInCart = cart.find(item => item.type === 'plan')
+  const productsInCart = cart.filter(item => item.type !== 'plan')
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -18,7 +19,7 @@ const Checkout = () => {
     area: '',
     pinCode: '',
     fullAddress: '',
-    plan: subscriptionPlan?.name || '',
+    plan: planInCart?.planData?.planType || '',
     subscriptionMonths: '1',
     slot: '',
     subscriptionStartDate: '',
@@ -73,31 +74,22 @@ const Checkout = () => {
   }
   
   useEffect(() => {
-    if (subscriptionPlan) {
-      setFormData(prev => ({ ...prev, plan: subscriptionPlan.value || subscriptionPlan.name }))
+    if (planInCart) {
+      setFormData(prev => ({
+        ...prev, 
+        plan: planInCart.planData.planType,
+        subscriptionMonths: planInCart.planData.subscriptionMonths.toString(),
+        numberOfSubscriptions: planInCart.planData.numberOfSubscriptions.toString()
+      }))
     }
-  }, [subscriptionPlan])
+  }, [planInCart])
   
   // Calculate subscription end date and pricing
   useEffect(() => {
-    if (formData.subscriptionStartDate && formData.plan && formData.subscriptionMonths) {
-      const startDate = new Date(formData.subscriptionStartDate)
-      const selectedPlan = planOptions.find(p => p.value === formData.plan)
-      
-      if (selectedPlan) {
-        const monthsToAdd = parseFloat(formData.subscriptionMonths) * selectedPlan.duration
-        const endDate = new Date(startDate)
-        endDate.setMonth(endDate.getMonth() + monthsToAdd)
-        setSubscriptionEndDate(endDate.toDateString())
-        
-        // Calculate pricing
-        const subscriptions = parseInt(formData.numberOfSubscriptions) || 1
-        const baseTotal = selectedPlan.price * parseFloat(formData.subscriptionMonths) * subscriptions
-        setTotalAmount(baseTotal)
-        setFinalPrice(baseTotal) // TODO: Apply coupon discount here
-      }
-    }
-  }, [formData.subscriptionStartDate, formData.plan, formData.subscriptionMonths, formData.numberOfSubscriptions])
+    // Use cart total directly as it includes both plans and products
+    setTotalAmount(cartTotal || 0)
+    setFinalPrice(cartTotal || 0) // TODO: Apply coupon discount here
+  }, [formData.subscriptionStartDate, formData.plan, formData.subscriptionMonths, formData.numberOfSubscriptions, cartTotal])
   
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -132,9 +124,17 @@ const Checkout = () => {
     }
     
     if (!formData.fullAddress.trim()) newErrors.fullAddress = 'Full address is required'
-    if (!formData.plan) newErrors.plan = 'Please select a plan'
-    if (!formData.slot) newErrors.slot = 'Please select a delivery slot'
-    if (!formData.subscriptionStartDate) newErrors.subscriptionStartDate = 'Start date is required'
+    
+    // Plan validation - only required if no cart items
+    if (!formData.plan && cart.length === 0) {
+      newErrors.plan = 'Please select a plan or add items to cart'
+    }
+    
+    // Subscription details only required if plan is selected
+    if (formData.plan) {
+      if (!formData.slot) newErrors.slot = 'Please select a delivery slot'
+      if (!formData.subscriptionStartDate) newErrors.subscriptionStartDate = 'Start date is required'
+    }
     
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -175,8 +175,8 @@ const Checkout = () => {
     alert('Coupon functionality will be implemented')
   }
   
-  // If no plan is selected and cart is empty, redirect to home
-  if (!subscriptionPlan && cart.length === 0) {
+  // Allow checkout with cart items
+  if (cart.length === 0) {
     return (
       <div className="pt-20 min-h-screen bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -201,17 +201,17 @@ const Checkout = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Checkout</h1>
-          <p className="text-gray-600">Complete your subscription order</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Checkout</h1>
+          <p className="text-gray-600">Complete your order{planInCart && productsInCart.length > 0 ? ' - subscription plan and individual fruits' : planInCart ? ' - subscription plan' : ' - individual fruits'}</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-8">
+        <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Customer Information Form */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Customer Information</h2>
+            <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-6">Customer Information</h2>
               
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                 {/* Full Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -348,15 +348,20 @@ const Checkout = () => {
               </div>
             </div>
 
-            {/* Subscription Details */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Subscription Details</h2>
+            {/* Subscription Details - Optional */}
+            <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900">Subscription Details</h2>
+                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                  {cart.length > 0 ? 'Optional' : 'Required'}
+                </span>
+              </div>
               
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                 {/* Plan */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Plan <span className="text-red-500">*</span>
+                    Plan {cart.length === 0 && <span className="text-red-500">*</span>}
                   </label>
                   <select
                     name="plan"
@@ -366,7 +371,7 @@ const Checkout = () => {
                       errors.plan ? 'border-red-500' : 'border-gray-300'
                     }`}
                   >
-                    <option value="">Select Plan</option>
+                    <option value="">{cart.length > 0 ? 'Select Plan (Optional)' : 'Select Plan'}</option>
                     {planOptions.map(plan => (
                       <option key={plan.value} value={plan.value}>{plan.label}</option>
                     ))}
@@ -374,8 +379,9 @@ const Checkout = () => {
                   {errors.plan && <p className="text-red-500 text-sm mt-1">{errors.plan}</p>}
                 </div>
 
-                {/* Subscription Months */}
-                <div>
+                {/* Subscription Months - Only if plan selected */}
+                {formData.plan && (
+                  <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Subscription Months <span className="text-red-500">*</span>
                   </label>
@@ -390,10 +396,12 @@ const Checkout = () => {
                     <option value="6">6 Months</option>
                     <option value="12">12 Months</option>
                   </select>
-                </div>
+                  </div>
+                )}
 
-                {/* Delivery Slot */}
-                <div>
+                {/* Delivery Slot - Only if plan selected */}
+                {formData.plan && (
+                  <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Delivery Slot <span className="text-red-500">*</span>
                   </label>
@@ -411,10 +419,12 @@ const Checkout = () => {
                     ))}
                   </select>
                   {errors.slot && <p className="text-red-500 text-sm mt-1">{errors.slot}</p>}
-                </div>
+                  </div>
+                )}
 
-                {/* Start Date */}
-                <div>
+                {/* Start Date - Only if plan selected */}
+                {formData.plan && (
+                  <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Subscription Start Date <span className="text-red-500">*</span>
                   </label>
@@ -429,10 +439,12 @@ const Checkout = () => {
                     }`}
                   />
                   {errors.subscriptionStartDate && <p className="text-red-500 text-sm mt-1">{errors.subscriptionStartDate}</p>}
-                </div>
+                  </div>
+                )}
 
-                {/* Number of Subscriptions */}
-                <div>
+                {/* Number of Subscriptions - Only if plan selected */}
+                {formData.plan && (
+                  <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     No of Subscriptions <span className="text-red-500">*</span>
                   </label>
@@ -446,7 +458,8 @@ const Checkout = () => {
                     placeholder="Enter number"
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                   />
-                </div>
+                  </div>
+                )}
               </div>
 
               {/* Subscription End Date Display */}
@@ -465,8 +478,8 @@ const Checkout = () => {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
+            <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 sticky top-24">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
               
               {/* Selected Plan Display */}
               {formData.plan && (
@@ -480,13 +493,43 @@ const Checkout = () => {
                       {formData.subscriptionMonths} month(s) × {formData.numberOfSubscriptions} subscription(s)
                     </p>
                   )}
+                  <div className="flex justify-between mt-2 text-sm">
+                    <span className="text-gray-600">Plan Total:</span>
+                    <span className="font-semibold text-green-600">
+                      ₹{formData.plan && formData.subscriptionMonths && formData.numberOfSubscriptions ? 
+                        (planOptions.find(p => p.value === formData.plan)?.price || 0) * parseFloat(formData.subscriptionMonths) * parseInt(formData.numberOfSubscriptions) 
+                        : 0}
+                    </span>
+                  </div>
+                </div>
+              )}
+              
+              {/* Cart Items Display */}
+              {cart.length > 0 && (
+                <div className="mb-6 p-4 bg-blue-50 rounded-xl">
+                  <h3 className="font-semibold text-gray-900 mb-3">Individual Fruits</h3>
+                  <div className="space-y-2">
+                    {cart.map((item) => (
+                      <div key={item.id} className="flex justify-between items-center text-sm">
+                        <div className="flex-1">
+                          <span className="text-gray-700">{item.name}</span>
+                          <span className="text-gray-500 ml-2">× {item.quantity}</span>
+                        </div>
+                        <span className="font-medium text-gray-900">₹{item.price * item.quantity}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-between mt-3 pt-2 border-t border-blue-200 text-sm">
+                    <span className="text-gray-600">Cart Total:</span>
+                    <span className="font-semibold text-blue-600">₹{cartTotal}</span>
+                  </div>
                 </div>
               )}
               
               {/* Coupon Section */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Apply Coupon</label>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
                     name="couponCode"
@@ -498,7 +541,7 @@ const Checkout = () => {
                   <button
                     type="button"
                     onClick={applyCoupon}
-                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors whitespace-nowrap"
                   >
                     Apply
                   </button>
@@ -507,10 +550,39 @@ const Checkout = () => {
               
               {/* Pricing Breakdown */}
               <div className="space-y-3 border-t border-gray-200 pt-6">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Total Amount</span>
-                  <span className="font-semibold">₹{totalAmount}</span>
-                </div>
+                {/* Show breakdown if both plan and cart items exist */}
+                {formData.plan && cart.length > 0 && (
+                  <>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Subscription Plan</span>
+                      <span className="font-medium">
+                        ₹{formData.plan && formData.subscriptionMonths && formData.numberOfSubscriptions ? 
+                          (planOptions.find(p => p.value === formData.plan)?.price || 0) * parseFloat(formData.subscriptionMonths) * parseInt(formData.numberOfSubscriptions) 
+                          : 0}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Individual Fruits</span>
+                      <span className="font-medium">₹{cartTotal}</span>
+                    </div>
+                    <div className="border-t border-gray-200 pt-2">
+                      <div className="flex justify-between">
+                        <span className="text-gray-700 font-medium">Subtotal</span>
+                        <span className="font-semibold">₹{totalAmount}</span>
+                      </div>
+                    </div>
+                  </>
+                )}
+                
+                {/* Show simple total if only one type */}
+                {(formData.plan && cart.length === 0) || (!formData.plan && cart.length > 0) ? (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">
+                      {formData.plan ? 'Subscription Total' : 'Cart Total'}
+                    </span>
+                    <span className="font-semibold">₹{totalAmount}</span>
+                  </div>
+                ) : null}
                 
                 <div className="flex justify-between">
                   <span className="text-gray-600">Delivery</span>

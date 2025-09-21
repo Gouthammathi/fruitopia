@@ -4,6 +4,7 @@ import React, { createContext, useContext, useReducer, useEffect } from 'react'
 const ACTION_TYPES = {
   // Cart actions
   ADD_TO_CART: 'ADD_TO_CART',
+  ADD_PLAN_TO_CART: 'ADD_PLAN_TO_CART',
   REMOVE_FROM_CART: 'REMOVE_FROM_CART',
   UPDATE_CART_QUANTITY: 'UPDATE_CART_QUANTITY',
   CLEAR_CART: 'CLEAR_CART',
@@ -71,23 +72,61 @@ const initialState = {
 const appReducer = (state, action) => {
   switch (action.type) {
     // Cart actions
+    case ACTION_TYPES.ADD_PLAN_TO_CART: {
+      const { plan, subscriptionMonths = 1, numberOfSubscriptions = 1 } = action.payload
+      
+      // Remove existing plan if any (only one plan allowed)
+      const newCartWithoutPlans = state.cart.filter(item => item.type !== 'plan')
+      
+      // Create plan cart item
+      const planCartItem = {
+        id: `plan-${plan.value}`,
+        name: plan.label || plan.name,
+        price: plan.price * subscriptionMonths * numberOfSubscriptions,
+        originalPrice: plan.price,
+        quantity: 1,
+        type: 'plan',
+        planData: {
+          planType: plan.value,
+          subscriptionMonths,
+          numberOfSubscriptions,
+          pricePerMonth: plan.price
+        },
+        image: '🎯' // Plan icon
+      }
+      
+      const newCart = [planCartItem, ...newCartWithoutPlans]
+      const cartTotal = calculateCartTotal(newCart, state.appliedCoupon)
+      const cartItemCount = newCart.reduce((total, item) => total + (item.type === 'plan' ? 0 : item.quantity), 0)
+      
+      return {
+        ...state,
+        cart: newCart,
+        cartTotal,
+        cartItemCount
+      }
+    }
+    
     case ACTION_TYPES.ADD_TO_CART: {
       const { product, quantity = 1 } = action.payload
-      const existingItem = state.cart.find(item => item.id === product.id)
+      const existingItem = state.cart.find(item => item.id === product.id && item.type !== 'plan')
       
       let newCart
       if (existingItem) {
         newCart = state.cart.map(item =>
-          item.id === product.id
+          item.id === product.id && item.type !== 'plan'
             ? { ...item, quantity: item.quantity + quantity }
             : item
         )
       } else {
-        newCart = [...state.cart, { ...product, quantity }]
+        // Add new product after plans but before other products
+        const planItems = state.cart.filter(item => item.type === 'plan')
+        const productItems = state.cart.filter(item => item.type !== 'plan')
+        newCart = [...planItems, { ...product, quantity, type: 'product' }, ...productItems]
       }
       
       const cartTotal = calculateCartTotal(newCart, state.appliedCoupon)
-      const cartItemCount = newCart.reduce((total, item) => total + item.quantity, 0)
+      const cartItemCount = newCart.reduce((total, item) => total + (item.type === 'plan' ? 0 : item.quantity), 0)
       
       return {
         ...state,
@@ -117,7 +156,7 @@ const appReducer = (state, action) => {
       ).filter(item => item.quantity > 0)
       
       const cartTotal = calculateCartTotal(newCart, state.appliedCoupon)
-      const cartItemCount = newCart.reduce((total, item) => total + item.quantity, 0)
+      const cartItemCount = newCart.reduce((total, item) => total + (item.type === 'plan' ? 0 : item.quantity), 0)
       
       return {
         ...state,
@@ -418,6 +457,11 @@ export const AppProvider = ({ children }) => {
     addToCart: (product, quantity = 1) => dispatch({
       type: ACTION_TYPES.ADD_TO_CART,
       payload: { product, quantity }
+    }),
+    
+    addPlanToCart: (plan, subscriptionMonths = 1, numberOfSubscriptions = 1) => dispatch({
+      type: ACTION_TYPES.ADD_PLAN_TO_CART,
+      payload: { plan, subscriptionMonths, numberOfSubscriptions }
     }),
     
     removeFromCart: (productId) => dispatch({

@@ -19,17 +19,30 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log('Form submitted:', formData)
+    // Add form submission logic here
+    alert('Thank you for your message! We\'ll get back to you soon.')
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      subject: '',
+      message: ''
+    })
   }
 
   return (
-    <div>
+    <div className="pt-20 min-h-screen bg-gray-50">
       {/* Header */}
-      <section className="py-12 lg:py-16 bg-gradient-to-br from-green-50 via-white to-green-50">
+      <section className="py-12 lg:py-20 bg-gradient-to-br from-green-50 via-white to-yellow-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            Get in Touch
+          <div className="inline-flex items-center gap-2 px-6 py-3 bg-green-100 text-green-700 text-sm font-semibold rounded-full mb-6">
+            <span>📧</span>
+            <span>Get in Touch</span>
+          </div>
+          <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6 font-['Poppins']">
+            We're Here to Help
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto font-['Inter'] leading-relaxed">
             Have questions about our fruits or need assistance with your order? 
             We're here to help you get the freshest fruits delivered to your doorstep.
           </p>
@@ -37,106 +50,112 @@ const Contact = () => {
       </section>
 
       {/* Contact Form and Info */}
-      <section className="py-16 lg:py-20 bg-white">
+      <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-16">
             {/* Contact Form */}
-            <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-xl border border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
-              
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
+            <div className="lg:col-span-7">
+              <div className="bg-white rounded-3xl p-6 lg:p-12 shadow-2xl border border-gray-100">
+                <div className="mb-8">
+                  <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4 font-['Poppins']">Send us a Message</h2>
+                  <p className="text-gray-600 font-['Inter']">Fill out the form below and we'll get back to you as soon as possible.</p>
+                </div>
+                
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3 font-['Inter']">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-200 focus:outline-none transition-all duration-200 font-['Inter']"
+                        placeholder="Your full name"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3 font-['Inter']">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-200 focus:outline-none transition-all duration-200 font-['Inter']"
+                        placeholder="Your phone number"
+                      />
+                    </div>
+                  </div>
+                  
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Full Name *
+                    <label className="block text-sm font-semibold text-gray-700 mb-3 font-['Inter']">
+                      Email Address *
                     </label>
                     <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
+                      type="email"
+                      name="email"
+                      value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-all duration-200"
-                      placeholder="Your full name"
+                      className="w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-200 focus:outline-none transition-all duration-200 font-['Inter']"
+                      placeholder="your.email@example.com"
                       required
                     />
                   </div>
+                  
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Phone Number
+                    <label className="block text-sm font-semibold text-gray-700 mb-3 font-['Inter']">
+                      Subject
                     </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
+                    <select
+                      name="subject"
+                      value={formData.subject}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-all duration-200"
-                      placeholder="Your phone number"
+                      className="w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-200 focus:outline-none transition-all duration-200 font-['Inter']"
+                    >
+                      <option value="">Select a subject</option>
+                      <option value="order">Order Inquiry</option>
+                      <option value="quality">Quality Concern</option>
+                      <option value="delivery">Delivery Issue</option>
+                      <option value="general">General Question</option>
+                      <option value="feedback">Feedback</option>
+                      <option value="partnership">Partnership</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-3 font-['Inter']">
+                      Message *
+                    </label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      rows={6}
+                      className="w-full px-4 py-4 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-200 focus:outline-none transition-all duration-200 resize-none font-['Inter']"
+                      placeholder="Tell us how we can help you..."
+                      required
                     />
                   </div>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-all duration-200"
-                    placeholder="your.email@example.com"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Subject
-                  </label>
-                  <select
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-all duration-200"
+                  
+                  <button
+                    type="submit"
+                    className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 font-['Poppins']"
                   >
-                    <option value="">Select a subject</option>
-                    <option value="order">Order Inquiry</option>
-                    <option value="quality">Quality Concern</option>
-                    <option value="delivery">Delivery Issue</option>
-                    <option value="general">General Question</option>
-                    <option value="feedback">Feedback</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Message *
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={6}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-all duration-200 resize-none"
-                    placeholder="Tell us how we can help you..."
-                    required
-                  />
-                </div>
-                
-                <button
-                  type="submit"
-                  className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-                >
-                  Send Message
-                </button>
-              </form>
+                    Send Message 🚀
+                  </button>
+                </form>
+              </div>
             </div>
 
             {/* Contact Information */}
-            <div className="space-y-8">
-              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-3xl p-8 lg:p-12 text-white">
-                <h2 className="text-2xl font-bold mb-8">Contact Information</h2>
+            <div className="lg:col-span-5 space-y-8">
+              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-3xl p-8 lg:p-10 text-white">
+                <h2 className="text-2xl lg:text-3xl font-bold mb-8 font-['Poppins']">Contact Information</h2>
                 
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">

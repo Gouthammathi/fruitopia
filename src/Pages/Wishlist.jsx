@@ -37,26 +37,26 @@ const Wishlist = () => {
     <div className="pt-20 min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">My Wishlist</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">My Wishlist</h1>
             <p className="text-gray-600">{wishlistCount} {wishlistCount === 1 ? 'item' : 'items'} saved for later</p>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
             <button
               onClick={() => {
                 wishlist.forEach(product => {
                   moveToCartFromWishlist(product.id, 1)
                 })
               }}
-              className="px-6 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
+              className="px-4 sm:px-6 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors text-sm sm:text-base"
             >
               Add All to Cart
             </button>
             <button
               onClick={clearWishlist}
-              className="px-6 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+              className="px-4 sm:px-6 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-colors text-sm sm:text-base"
             >
               Clear Wishlist
             </button>
@@ -64,7 +64,7 @@ const Wishlist = () => {
         </div>
 
         {/* Wishlist Items */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {wishlist.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -74,7 +74,7 @@ const Wishlist = () => {
         <div className="text-center mt-12">
           <button
             onClick={() => navigate('/products')}
-            className="px-8 py-4 border-2 border-green-500 text-green-600 font-semibold rounded-xl hover:bg-green-500 hover:text-white transition-all duration-200"
+            className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-green-500 text-green-600 font-semibold rounded-xl hover:bg-green-500 hover:text-white transition-all duration-200"
           >
             Continue Shopping
           </button>

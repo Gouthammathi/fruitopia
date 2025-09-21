@@ -54,7 +54,8 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="pt-20 min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
       <nav className="mb-8">
         <ol className="flex items-center space-x-2 text-sm text-gray-500">
@@ -72,10 +73,10 @@ const ProductDetails = () => {
         </ol>
       </nav>
 
-      {/* Product Main Section */}
-      <div className="grid lg:grid-cols-2 gap-12 mb-12">
-        {/* Product Images */}
-        <div className="space-y-4">
+        {/* Product Main Section */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
+          {/* Product Images */}
+          <div className="space-y-4">
           <div className="aspect-square rounded-2xl overflow-hidden bg-gray-100">
             <img
               src={product.images?.[selectedImage] || product.image}
@@ -99,10 +100,10 @@ const ProductDetails = () => {
               ))}
             </div>
           )}
-        </div>
+          </div>
 
-        {/* Product Info */}
-        <div className="space-y-6">
+          {/* Product Info */}
+          <div className="space-y-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
@@ -225,12 +226,12 @@ const ProductDetails = () => {
                 Same-day delivery available in Mumbai
               </div>
             </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Product Details Tabs */}
-      <div className="mb-12">
+        {/* Product Details Tabs */}
+        <div className="mb-12">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8">
             {[
@@ -351,43 +352,44 @@ const ProductDetails = () => {
             </div>
           )}
         </div>
-      </div>
+        </div>
 
-      {/* Related Products */}
-      {relatedProducts.length > 0 && (
-        <div>
-          <h2 className="text-2xl font-bold mb-8">Related Products</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedProducts.slice(0, 4).map((relatedProduct) => (
-              <div
-                key={relatedProduct.id}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer"
-                onClick={() => navigate(`/product/${relatedProduct.id}`)}
-              >
-                <div className="aspect-square overflow-hidden">
-                  <img
-                    src={relatedProduct.image}
-                    alt={relatedProduct.name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-800 mb-2">{relatedProduct.name}</h3>
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-green-600">₹{relatedProduct.price}</span>
-                    <div className="flex items-center gap-1">
-                      <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                      <span className="text-sm text-gray-600">{relatedProduct.rating || 4.5}</span>
+        {/* Related Products */}
+        {relatedProducts.length > 0 && (
+          <div>
+            <h2 className="text-2xl font-bold mb-8">Related Products</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {relatedProducts.slice(0, 4).map((relatedProduct) => (
+                <div
+                  key={relatedProduct.id}
+                  className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer"
+                  onClick={() => navigate(`/product/${relatedProduct.id}`)}
+                >
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={relatedProduct.image}
+                      alt={relatedProduct.name}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-gray-800 mb-2">{relatedProduct.name}</h3>
+                    <div className="flex items-center justify-between">
+                      <span className="text-lg font-bold text-green-600">₹{relatedProduct.price}</span>
+                      <div className="flex items-center gap-1">
+                        <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <span className="text-sm text-gray-600">{relatedProduct.rating || 4.5}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
