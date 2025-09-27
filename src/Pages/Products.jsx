@@ -88,10 +88,12 @@ const Products = () => {
             <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 font-['Poppins']">
               Premium Fruit Collection
             </h1>
-            <p className="text-xl text-gray-600 text-center mx-auto max-w-5xl px-6 lg:px-12 xl:px-16 pr-8 lg:pr-16 xl:pr-24 font-['Inter']">
-              Discover our carefully curated selection of fresh, seasonal, and imported fruits. 
-              Quality guaranteed, delivered fresh to your doorstep.
-            </p>
+            <div className="flex justify-center">
+              <p className="text-xl text-gray-600 text-center max-w-5xl px-6 lg:px-12 xl:px-16 pr-8 lg:pr-16 xl:pr-24 font-['Inter']">
+                Discover our carefully curated selection of fresh, seasonal, and imported fruits. 
+                Quality guaranteed, delivered fresh to your doorstep.
+              </p>
+            </div>
           </div>
           
           {/* Search Bar */}

@@ -52,25 +52,25 @@ const Checkout = () => {
   ]
   
   const stateOptions = [
-    'Maharashtra',
-    'Gujarat',
+    'Telangana',
+    'Andhra Pradesh',
     'Karnataka',
     'Tamil Nadu',
     'Delhi',
     'Uttar Pradesh',
     'West Bengal',
-    'Rajasthan'
+    'Maharashtra'
   ]
   
   const cityOptions = {
-    Maharashtra: ['Mumbai', 'Pune', 'Nagpur', 'Thane', 'Nashik'],
-    Gujarat: ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot'],
+    Telangana: ['Hyderabad', 'Secunderabad', 'Cyberabad', 'Warangal', 'Nizamabad'],
+    'Andhra Pradesh': ['Visakhapatnam', 'Vijayawada', 'Guntur', 'Tirupati'],
     Karnataka: ['Bangalore', 'Mysore', 'Mangalore', 'Hubli'],
     'Tamil Nadu': ['Chennai', 'Coimbatore', 'Madurai', 'Salem'],
     Delhi: ['New Delhi', 'Central Delhi', 'South Delhi', 'North Delhi'],
     'Uttar Pradesh': ['Lucknow', 'Kanpur', 'Agra', 'Varanasi'],
     'West Bengal': ['Kolkata', 'Howrah', 'Durgapur', 'Siliguri'],
-    Rajasthan: ['Jaipur', 'Jodhpur', 'Udaipur', 'Kota']
+    Maharashtra: ['Mumbai', 'Pune', 'Nagpur', 'Thane', 'Nashik']
   }
   
   useEffect(() => {

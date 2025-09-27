@@ -4,6 +4,8 @@ import Layout from './Layout'
 import Home from '../Pages/Home'
 import Products from '../Pages/Products'
 import ProductDetails from '../Pages/ProductDetails'
+import Plans from '../Pages/Plans'
+import PlanDetails from '../Pages/PlanDetails'
 import Contact from '../Pages/Contact'
 import Cart from '../Pages/Cart'
 import Checkout from '../Pages/Checkout'
@@ -17,6 +19,8 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'products', element: <Products /> },
       { path: 'product/:id', element: <ProductDetails /> },
+      { path: 'plans', element: <Plans /> },
+      { path: 'plan/:planId', element: <PlanDetails /> },
       { path: 'contact', element: <Contact /> },
       { path: 'cart', element: <Cart /> },
       { path: 'checkout', element: <Checkout /> },

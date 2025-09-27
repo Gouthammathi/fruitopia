@@ -42,10 +42,12 @@ const Contact = () => {
           <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6 font-['Poppins']">
             We're Here to Help
           </h1>
-          <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto font-['Inter'] leading-relaxed">
-            Have questions about our fruits or need assistance with your order? 
-            We're here to help you get the freshest fruits delivered to your doorstep.
-          </p>
+          <div className="flex justify-center">
+            <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl text-center font-['Inter'] leading-relaxed">
+              Have questions about our fruits or need assistance with your order? 
+              We're here to help you get the freshest fruits delivered to your doorstep.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -58,7 +60,7 @@ const Contact = () => {
               <div className="bg-white rounded-3xl p-6 lg:p-12 shadow-2xl border border-gray-100">
                 <div className="mb-8">
                   <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4 font-['Poppins']">Send us a Message</h2>
-                  <p className="text-gray-600 font-['Inter']">Fill out the form below and we'll get back to you as soon as possible.</p>
+                  <p className="text-gray-600 font-['Inter'] text-center">Fill out the form below and we'll get back to you as soon as possible.</p>
                 </div>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -169,7 +171,7 @@ const Contact = () => {
                       <h3 className="font-semibold text-lg mb-1">Visit Our Store</h3>
                       <p className="text-green-100 leading-relaxed">
                         123 Fresh Market Street,<br />
-                        Mumbai, Maharashtra 400001,<br />
+                        Hyderabad, Telangana 500001,<br />
                         India
                       </p>
                     </div>
@@ -216,7 +218,9 @@ const Contact = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Find Our Store</h2>
-            <p className="text-lg text-gray-600">Visit us in person for the freshest selection</p>
+            <div className="flex justify-center">
+              <p className="text-lg text-gray-600 text-center">Visit us in person for the freshest selection</p>
+            </div>
           </div>
           
           <div className="aspect-video w-full bg-gray-200 rounded-2xl flex items-center justify-center">
