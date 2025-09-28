@@ -33,12 +33,12 @@ const SearchFilters = ({ isOpen, onClose }) => {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden lg:relative lg:inset-auto lg:z-auto w-full max-w-full">
+    <div className="fixed inset-0 z-50 overflow-hidden lg:relative lg:inset-auto lg:z-auto">
       {/* Backdrop for mobile */}
       <div className="absolute inset-0 bg-black/50 lg:hidden" onClick={onClose}></div>
       
       {/* Filter Panel */}
-      <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-xl lg:relative lg:max-w-none lg:w-80 lg:shadow-lg lg:rounded-2xl overflow-hidden">
+      <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-xl lg:relative lg:max-w-none lg:w-80 lg:shadow-lg lg:rounded-2xl">
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200 lg:rounded-t-2xl">

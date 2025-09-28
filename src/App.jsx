@@ -4,11 +4,9 @@ import Routers from './components/Routers'
 
 const App = () => {
   return (
-    <div id="app-root" className="desktop-zoom">
-      <AppProvider>
-        <Routers />
-      </AppProvider>
-    </div>
+    <AppProvider>
+      <Routers />
+    </AppProvider>
   )
 }
 

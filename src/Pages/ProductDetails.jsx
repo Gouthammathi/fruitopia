@@ -54,21 +54,21 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className="pt-20 min-h-screen bg-slate-50">
+    <div className="pt-20 min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
       <nav className="mb-8">
-        <ol className="flex items-center space-x-2 text-sm text-slate-500">
+        <ol className="flex items-center space-x-2 text-sm text-gray-500">
           <li>
-            <button onClick={() => navigate('/')} className="hover:text-emerald-600">Home</button>
+            <button onClick={() => navigate('/')} className="hover:text-green-600">Home</button>
           </li>
           <li>/</li>
           <li>
-            <button onClick={() => navigate('/products')} className="hover:text-emerald-600">Products</button>
+            <button onClick={() => navigate('/products')} className="hover:text-green-600">Products</button>
           </li>
           <li>/</li>
           <li>
-            <span className="text-slate-800 font-medium">{product.name}</span>
+            <span className="text-gray-800 font-medium">{product.name}</span>
           </li>
         </ol>
       </nav>
@@ -77,7 +77,7 @@ const ProductDetails = () => {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
           {/* Product Images */}
           <div className="space-y-4">
-          <div className="aspect-square rounded-2xl overflow-hidden bg-slate-100">
+          <div className="aspect-square rounded-2xl overflow-hidden bg-gray-100">
             <img
               src={product.images?.[selectedImage] || product.image}
               alt={product.name}

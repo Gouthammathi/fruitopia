@@ -13,10 +13,10 @@ const Layout = () => {
   }, [location.pathname])
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 overflow-x-hidden w-full max-w-full">
+    <div className="flex flex-col bg-slate-50 overflow-x-hidden zoom-container">
       <Header />
 
-      <main className="flex-1 w-full max-w-full overflow-x-hidden">
+      <main className="flex-1 w-full">
         <Outlet />
       </main>
 

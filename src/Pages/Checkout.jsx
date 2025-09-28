@@ -197,24 +197,24 @@ const Checkout = () => {
   }
   
   return (
-    <div className="pt-20 min-h-screen bg-slate-50">
+    <div className="pt-20 min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Checkout</h1>
-          <p className="text-slate-600">Complete your order{planInCart && productsInCart.length > 0 ? ' - subscription plan and individual fruits' : planInCart ? ' - subscription plan' : ' - individual fruits'}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Checkout</h1>
+          <p className="text-gray-600">Complete your order{planInCart && productsInCart.length > 0 ? ' - subscription plan and individual fruits' : planInCart ? ' - subscription plan' : ' - individual fruits'}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Customer Information Form */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 mb-6">
-              <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-6">Customer Information</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-6">Customer Information</h2>
               
               <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                 {/* Full Name */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Full Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -223,8 +223,8 @@ const Checkout = () => {
                     value={formData.fullName}
                     onChange={handleInputChange}
                     placeholder="John Doe"
-                    className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
-                      errors.fullName ? 'border-red-500' : 'border-slate-300'
+                    className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors ${
+                      errors.fullName ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
                   {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}

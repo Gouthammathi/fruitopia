@@ -65,10 +65,6 @@
   box-sizing: border-box;
 }
 
-html {
-  overflow-x: hidden; /* Prevent horizontal scroll globally */
-}
-
 body {
   font-family: var(--font-family-primary);
   font-weight: 400;
@@ -77,9 +73,12 @@ body {
   background-color: var(--color-gray-50);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden; /* Additional horizontal scroll prevention */
-  width: 100%;
-  max-width: 100vw; /* Ensure body doesn't exceed viewport width */
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  min-height: auto;
 }
 
 /* Typography enhancements */
@@ -130,39 +129,6 @@ p {
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
-}
-
-/* Prevent horizontal overflow globally */
-html, body {
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100vw;
-}
-
-/* Ensure all containers respect viewport width */
-.container, .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl, .max-w-2xl, .max-w-xl, .max-w-lg, .max-w-md, .max-w-sm, .max-w-xs {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-/* Prevent images and media from causing overflow */
-img, video, iframe, embed, object {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Prevent tables from causing horizontal overflow */
-table {
-  width: 100%;
-  max-width: 100%;
-  table-layout: fixed;
-}
-
-/* Prevent pre and code blocks from causing overflow */
-pre, code {
-  max-width: 100%;
-  overflow-x: auto;
-  word-wrap: break-word;
 }
 
 /* Smooth scrolling */
@@ -537,46 +503,417 @@ html {
   background: linear-gradient(135deg, var(--color-secondary), #4f46e5);
 }
 
-/* Desktop Zoom - Scale entire website to 75% on desktop only */
-@media (min-width: 1024px) {
-  .desktop-zoom {
-    transform: scale(0.75);
-    transform-origin: top center;
-    width: 100vw; /* Use viewport width to prevent overflow */
-    min-height: 133.333vh; /* Compensate for scale to maintain full height */
-    margin: 0 auto; /* Center horizontally */
-    position: relative;
-    overflow-x: hidden; /* Prevent horizontal scroll */
-  }
-  
-  /* Ensure proper scrolling behavior */
-  .desktop-zoom {
+/* Zoom effect styles */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  min-height: auto;
+}
+
+#root {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+  min-height: auto;
+}
+
+/* Ensure proper scaling for zoomed content */
+.zoom-container {
+  transform: scale(0.75);
+  transform-origin: top left;
+  width: 133.33%;
+  height: auto;
+  position: relative;
+  margin-bottom: 0;
+  overflow-x: hidden;
+  overflow-y: visible;
+  padding-bottom: 0;
+}
+
+/* Ensure footer has no bottom spacing */
+.zoom-container footer {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Ensure no extra space after footer */
+.zoom-container footer:last-child {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Adjust container widths to work with zoom */
+.zoom-container .max-w-7xl {
+  max-width: calc(80rem * 1.33);
+}
+
+.zoom-container .max-w-6xl {
+  max-width: calc(72rem * 1.33);
+}
+
+.zoom-container .max-w-5xl {
+  max-width: calc(64rem * 1.33);
+}
+
+.zoom-container .max-w-4xl {
+  max-width: calc(56rem * 1.33);
+}
+
+.zoom-container .max-w-3xl {
+  max-width: calc(48rem * 1.33);
+}
+
+.zoom-container .max-w-2xl {
+  max-width: calc(42rem * 1.33);
+}
+
+.zoom-container .max-w-xl {
+  max-width: calc(36rem * 1.33);
+}
+
+.zoom-container .max-w-lg {
+  max-width: calc(32rem * 1.33);
+}
+
+.zoom-container .max-w-md {
+  max-width: calc(28rem * 1.33);
+}
+
+.zoom-container .max-w-sm {
+  max-width: calc(24rem * 1.33);
+}
+
+/* Ensure all child elements maintain proper scaling */
+.zoom-container * {
+  transform-origin: inherit;
+}
+
+/* Adjust common spacing classes for zoom */
+.zoom-container .px-4 {
+  padding-left: calc(1rem * 1.33);
+  padding-right: calc(1rem * 1.33);
+}
+
+.zoom-container .px-6 {
+  padding-left: calc(1.5rem * 1.33);
+  padding-right: calc(1.5rem * 1.33);
+}
+
+.zoom-container .px-8 {
+  padding-left: calc(2rem * 1.33);
+  padding-right: calc(2rem * 1.33);
+}
+
+.zoom-container .py-4 {
+  padding-top: calc(1rem * 1.33);
+  padding-bottom: calc(1rem * 1.33);
+}
+
+.zoom-container .py-6 {
+  padding-top: calc(1.5rem * 1.33);
+  padding-bottom: calc(1.5rem * 1.33);
+}
+
+.zoom-container .py-8 {
+  padding-top: calc(2rem * 1.33);
+  padding-bottom: calc(2rem * 1.33);
+}
+
+.zoom-container .py-12 {
+  padding-top: calc(3rem * 1.33);
+  padding-bottom: calc(3rem * 1.33);
+}
+
+.zoom-container .py-16 {
+  padding-top: calc(4rem * 1.33);
+  padding-bottom: calc(4rem * 1.33);
+}
+
+.zoom-container .py-20 {
+  padding-top: calc(5rem * 1.33);
+  padding-bottom: calc(5rem * 1.33);
+}
+
+/* Adjust margin classes */
+.zoom-container .mb-4 {
+  margin-bottom: calc(1rem * 1.33);
+}
+
+.zoom-container .mb-6 {
+  margin-bottom: calc(1.5rem * 1.33);
+}
+
+.zoom-container .mb-8 {
+  margin-bottom: calc(2rem * 1.33);
+}
+
+.zoom-container .mb-12 {
+  margin-bottom: calc(3rem * 1.33);
+}
+
+.zoom-container .mb-16 {
+  margin-bottom: calc(4rem * 1.33);
+}
+
+.zoom-container .mt-4 {
+  margin-top: calc(1rem * 1.33);
+}
+
+.zoom-container .mt-6 {
+  margin-top: calc(1.5rem * 1.33);
+}
+
+.zoom-container .mt-8 {
+  margin-top: calc(2rem * 1.33);
+}
+
+.zoom-container .mt-12 {
+  margin-top: calc(3rem * 1.33);
+}
+
+.zoom-container .mt-16 {
+  margin-top: calc(4rem * 1.33);
+}
+
+/* Fix for fixed positioned elements */
+.zoom-container .fixed {
+  transform: scale(1.33);
+  transform-origin: top left;
+}
+
+/* Specific fix for header */
+.zoom-container header.fixed {
+  transform: scale(1.33);
+  transform-origin: top left;
+  width: 75%;
+  left: 0;
+  right: auto;
+}
+
+/* Ensure modals and overlays work correctly */
+.zoom-container .modal,
+.zoom-container .overlay,
+.zoom-container .dropdown {
+  transform: scale(1.33);
+  transform-origin: center;
+}
+
+/* Ensure proper alignment for common layout patterns */
+.zoom-container .flex {
+  display: flex;
+}
+
+.zoom-container .grid {
+  display: grid;
+}
+
+.zoom-container .items-center {
+  align-items: center;
+}
+
+.zoom-container .justify-center {
+  justify-content: center;
+}
+
+.zoom-container .text-center {
+  text-align: center;
+}
+
+.zoom-container .mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ensure proper gap spacing */
+.zoom-container .gap-2 {
+  gap: calc(0.5rem * 1.33);
+}
+
+.zoom-container .gap-4 {
+  gap: calc(1rem * 1.33);
+}
+
+.zoom-container .gap-6 {
+  gap: calc(1.5rem * 1.33);
+}
+
+.zoom-container .gap-8 {
+  gap: calc(2rem * 1.33);
+}
+
+.zoom-container .space-x-2 > * + * {
+  margin-left: calc(0.5rem * 1.33);
+}
+
+.zoom-container .space-x-4 > * + * {
+  margin-left: calc(1rem * 1.33);
+}
+
+.zoom-container .space-x-6 > * + * {
+  margin-left: calc(1.5rem * 1.33);
+}
+
+.zoom-container .space-y-2 > * + * {
+  margin-top: calc(0.5rem * 1.33);
+}
+
+.zoom-container .space-y-4 > * + * {
+  margin-top: calc(1rem * 1.33);
+}
+
+.zoom-container .space-y-6 > * + * {
+  margin-top: calc(1.5rem * 1.33);
+}
+
+/* Responsive adjustments for zoom */
+@media (max-width: 768px) {
+  .zoom-container {
+    transform: scale(0.8);
+    width: 125%;
+    height: auto;
+    margin-bottom: 0;
     overflow-x: hidden;
+    overflow-y: visible;
+    padding-bottom: 0;
   }
   
-  /* Fix any potential positioning issues */
-  .desktop-zoom * {
-    position: relative;
+  .zoom-container footer {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
   }
   
-  /* Ensure fixed elements work correctly */
-  .desktop-zoom .fixed {
-    transform: scale(1.333); /* Reverse scale for fixed elements */
+  .zoom-container header.fixed {
+    transform: scale(1.25);
+    width: 80%;
   }
   
-  /* Prevent any child elements from causing horizontal overflow */
-  .desktop-zoom * {
-    max-width: 100%;
-    box-sizing: border-box;
+  .zoom-container .max-w-7xl {
+    max-width: calc(80rem * 1.25);
+  }
+  
+  .zoom-container .max-w-6xl {
+    max-width: calc(72rem * 1.25);
+  }
+  
+  .zoom-container .max-w-5xl {
+    max-width: calc(64rem * 1.25);
+  }
+  
+  .zoom-container .max-w-4xl {
+    max-width: calc(56rem * 1.25);
+  }
+  
+  .zoom-container .max-w-3xl {
+    max-width: calc(48rem * 1.25);
+  }
+  
+  /* Adjust spacing for mobile */
+  .zoom-container .px-4 {
+    padding-left: calc(1rem * 1.25);
+    padding-right: calc(1rem * 1.25);
+  }
+  
+  .zoom-container .px-6 {
+    padding-left: calc(1.5rem * 1.25);
+    padding-right: calc(1.5rem * 1.25);
+  }
+  
+  .zoom-container .py-4 {
+    padding-top: calc(1rem * 1.25);
+    padding-bottom: calc(1rem * 1.25);
+  }
+  
+  .zoom-container .py-6 {
+    padding-top: calc(1.5rem * 1.25);
+    padding-bottom: calc(1.5rem * 1.25);
+  }
+  
+  .zoom-container .py-8 {
+    padding-top: calc(2rem * 1.25);
+    padding-bottom: calc(2rem * 1.25);
+  }
+  
+  .zoom-container .gap-4 {
+    gap: calc(1rem * 1.25);
+  }
+  
+  .zoom-container .gap-6 {
+    gap: calc(1.5rem * 1.25);
   }
 }
 
-/* Mobile and tablet - normal scale (100%) */
-@media (max-width: 1023px) {
-  .desktop-zoom {
-    transform: none;
-    width: 100%;
-    min-height: 100vh;
+@media (max-width: 480px) {
+  .zoom-container {
+    transform: scale(0.85);
+    width: 117.65%;
+    height: auto;
+    margin-bottom: 0;
+    overflow-x: hidden;
+    overflow-y: visible;
+    padding-bottom: 0;
+  }
+  
+  .zoom-container footer {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  
+  .zoom-container header.fixed {
+    transform: scale(1.1765);
+    width: 85%;
+  }
+  
+  .zoom-container .max-w-7xl {
+    max-width: calc(80rem * 1.1765);
+  }
+  
+  .zoom-container .max-w-6xl {
+    max-width: calc(72rem * 1.1765);
+  }
+  
+  .zoom-container .max-w-5xl {
+    max-width: calc(64rem * 1.1765);
+  }
+  
+  .zoom-container .max-w-4xl {
+    max-width: calc(56rem * 1.1765);
+  }
+  
+  .zoom-container .max-w-3xl {
+    max-width: calc(48rem * 1.1765);
+  }
+  
+  /* Adjust spacing for small mobile */
+  .zoom-container .px-4 {
+    padding-left: calc(1rem * 1.1765);
+    padding-right: calc(1rem * 1.1765);
+  }
+  
+  .zoom-container .px-6 {
+    padding-left: calc(1.5rem * 1.1765);
+    padding-right: calc(1.5rem * 1.1765);
+  }
+  
+  .zoom-container .py-4 {
+    padding-top: calc(1rem * 1.1765);
+    padding-bottom: calc(1rem * 1.1765);
+  }
+  
+  .zoom-container .py-6 {
+    padding-top: calc(1.5rem * 1.1765);
+    padding-bottom: calc(1.5rem * 1.1765);
+  }
+  
+  .zoom-container .gap-4 {
+    gap: calc(1rem * 1.1765);
+  }
+  
+  .zoom-container .gap-6 {
+    gap: calc(1.5rem * 1.1765);
   }
 }
 
@@ -593,12 +930,5 @@ html {
   body {
     background: white;
     color: black;
-  }
-  
-  /* Disable zoom for print */
-  .desktop-zoom {
-    transform: none !important;
-    width: 100% !important;
-    min-height: 100vh !important;
   }
 }

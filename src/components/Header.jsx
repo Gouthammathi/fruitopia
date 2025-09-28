@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useApp } from '../context/AppContext'
 import { scrollToTop } from '../utils/scrollToTop'
 
 const Header = () => {
@@ -9,7 +8,6 @@ const Header = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
   const navigate = useNavigate()
-  const { cartItemCount, wishlistCount } = useApp()
 
 
   useEffect(() => {
@@ -58,31 +56,31 @@ const Header = () => {
   }, [isMenuOpen, isHeaderVisible])
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+    <header className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
       isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
     } ${
       isScrolled 
-        ? 'bg-white/95 backdrop-blur-xl border-b border-slate-200/50 shadow-sm' 
-        : 'bg-white/80 backdrop-blur-sm border-b border-slate-200/30'
+        ? 'bg-white/98 backdrop-blur-md border-b border-slate-200/60 shadow-lg' 
+        : 'bg-white/90 backdrop-blur-sm border-b border-slate-200/40'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-18">
+        <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <div 
-            className="flex items-center gap-2 sm:gap-3 cursor-pointer group"
+            className="flex items-center gap-3 cursor-pointer group"
             onClick={() => {
               navigate('/')
               scrollToTop()
             }}
           >
-            <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 flex items-center justify-center text-white font-bold text-sm sm:text-lg lg:text-xl shadow-sm transform group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg lg:text-xl shadow-sm transform group-hover:scale-105 transition-transform">
               🍏
             </div>
-            <span className="font-bold text-lg sm:text-xl lg:text-2xl text-slate-900 font-['Poppins']">Fruitopia</span>
+            <span className="font-bold text-xl lg:text-2xl text-slate-900 font-['Poppins']">Fruitopia</span>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
+          <nav className="hidden lg:flex items-center gap-6 text-sm font-medium">
             {[
               { to: '/', label: 'Home', end: true },
               { to: '/products', label: 'Products' },
@@ -95,10 +93,10 @@ const Header = () => {
                     end={item.end}
                     onClick={() => scrollToTop('smooth')}
                     className={({ isActive }) => 
-                      `px-4 py-2 rounded-lg transition-all duration-200 font-['Inter'] ${
+                      `px-3 py-2 rounded-md transition-all duration-200 font-['Inter'] ${
                         isActive 
-                          ? 'text-emerald-600 bg-emerald-50 font-medium' 
-                          : 'text-slate-700 hover:text-emerald-600 hover:bg-slate-50'
+                          ? 'text-emerald-600 bg-emerald-50 font-semibold' 
+                          : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
                       }`
                     }
                   >
@@ -106,99 +104,29 @@ const Header = () => {
                   </NavLink>
             ))}
             
-            {/* Games Button */}
-            <div className="relative group">
-              <button
-                onClick={() => window.open('http://fruitopiaa.vercel.app', '_blank')}
-                className="px-4 py-2 rounded-lg transition-all duration-200 font-['Inter'] text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 flex items-center gap-2"
-              >
-                <span>🎮</span>
-                <span>Games</span>
-              </button>
-              
-              {/* Tooltip */}
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-slate-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
-                Fruitopia Games
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-slate-900"></div>
-              </div>
-            </div>
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-4">
-            {/* Cart & Wishlist Icons */}
-            <div className="flex items-center gap-3">
-                  <button 
-                    onClick={() => {
-                      navigate('/wishlist')
-                      scrollToTop('smooth')
-                    }}
-                    className="relative p-2 rounded-lg text-slate-600 hover:text-rose-500 hover:bg-rose-50 transition-all duration-200 group"
-                  >
-                <svg className="w-5 h-5" fill={wishlistCount > 0 ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
-                    {wishlistCount}
-                  </span>
-                )}
-              </button>
-              
-                  <button 
-                    onClick={() => {
-                      navigate('/cart')
-                      scrollToTop('smooth')
-                    }}
-                    className="relative p-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-all duration-200 group"
-                  >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 10-4 0v4.01" />
-                </svg>
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
-                    {cartItemCount}
-                  </span>
-                )}
-              </button>
-            </div>
-            
-                <button 
-                  onClick={() => {
-                    navigate('/plans')
-                    scrollToTop('smooth')
-                  }}
-                  className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-sm font-medium hover:from-emerald-600 hover:to-emerald-700 shadow-sm hover:shadow-md transition-all duration-200"
-                >
-                  Order Now
-                </button>
+          {/* Desktop Actions - Only visible on large screens */}
+          <div className="hidden lg:flex items-center">
+            <button 
+              onClick={() => {
+                // Placeholder for login functionality
+                console.log('Login clicked')
+              }}
+              className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-sm font-semibold hover:from-emerald-600 hover:to-emerald-700 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+            >
+              Login
+            </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center gap-3">
-              {/* Mobile Cart/Wishlist Icons */}
-              <button 
-                onClick={() => {
-                  navigate('/cart')
-                  scrollToTop('smooth')
-                }}
-                className="relative p-1.5 sm:p-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
-              >
-                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 10-4 0v4.01" />
-                </svg>
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-emerald-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
-                    {cartItemCount}
-                  </span>
-                )}
-              </button>
-            
+          {/* Mobile Menu Button - Only visible on small/medium screens */}
+          <div className="block lg:hidden">
             <button 
-              className="mobile-menu-container p-1.5 sm:p-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-colors"
+              className="mobile-menu-container p-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-all duration-200"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle mobile menu"
             >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {isMenuOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 ) : (
@@ -213,7 +141,7 @@ const Header = () => {
       {/* Mobile Menu */}
       <div className={`lg:hidden mobile-menu-container transition-all duration-300 overflow-hidden ${
         isMenuOpen 
-          ? 'max-h-96 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-sm' 
+          ? 'max-h-96 bg-white/98 backdrop-blur-md border-b border-slate-200/60 shadow-lg' 
           : 'max-h-0'
       }`}>
         <nav className="px-4 py-4 space-y-2">
@@ -221,7 +149,6 @@ const Header = () => {
             { to: '/', label: 'Home', end: true },
             { to: '/products', label: 'Products' },
             { to: '/plans', label: 'Plans' },
-            { to: '/wishlist', label: `Wishlist ${wishlistCount > 0 ? `(${wishlistCount})` : ''}` },
             { to: '/contact', label: 'Contact' },
           ].map((item) => (
                 <NavLink
@@ -229,10 +156,10 @@ const Header = () => {
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) => 
-                    `block px-4 py-3 rounded-lg transition-colors font-medium ${
+                    `block px-4 py-3 rounded-md transition-all duration-200 font-medium ${
                       isActive 
-                        ? 'text-emerald-600 bg-emerald-50 font-medium' 
-                        : 'text-slate-700 hover:text-emerald-600 hover:bg-slate-50'
+                        ? 'text-emerald-600 bg-emerald-50 font-semibold' 
+                        : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
                     }`
                   }
                   onClick={() => {
@@ -250,7 +177,7 @@ const Header = () => {
               setIsMenuOpen(false)
               window.open('http://fruitopiaa.vercel.app', '_blank')
             }}
-            className="block w-full text-left px-4 py-3 rounded-lg transition-colors font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50"
+            className="block w-full text-left px-4 py-3 rounded-md transition-all duration-200 font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50"
           >
             <span className="flex items-center gap-2">
               <span>🎮</span>
@@ -263,12 +190,12 @@ const Header = () => {
                 <button 
                   onClick={() => {
                     setIsMenuOpen(false)
-                    navigate('/plans')
-                    scrollToTop('smooth')
+                    // Placeholder for login functionality
+                    console.log('Login clicked')
                   }}
-                  className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium hover:from-emerald-600 hover:to-emerald-700 transition-all duration-200"
+                  className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold hover:from-emerald-600 hover:to-emerald-700 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
                 >
-                  Order Now
+                  Login
                 </button>
           </div>
         </nav>

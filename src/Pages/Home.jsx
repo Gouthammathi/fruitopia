@@ -207,9 +207,9 @@ const Home = () => {
   }, [])
 
   return (
-    <div className="overflow-hidden w-full max-w-full">
+    <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50 w-full max-w-full">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="w-full h-full" style={{
@@ -578,8 +578,8 @@ const Home = () => {
           {/* Interactive Timeline */}
           <div className="relative">
             {/* Curved Path */}
-            <div className="hidden lg:block absolute inset-0 pointer-events-none overflow-hidden">
-              <svg className="w-full h-full max-w-full" viewBox="0 0 1200 800" preserveAspectRatio="none">
+            <div className="hidden lg:block absolute inset-0 pointer-events-none">
+              <svg className="w-full h-full" viewBox="0 0 1200 800" preserveAspectRatio="none">
                 <path
                   id="journey-path"
                   d="M 50 200 Q 300 100 600 200 T 1150 200"
@@ -752,9 +752,9 @@ const Home = () => {
         </div>
 
         {/* Background Decoration */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none w-full max-w-full">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-100 rounded-full opacity-20 max-w-full"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-100 rounded-full opacity-20 max-w-full"></div>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-100 rounded-full opacity-20"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-100 rounded-full opacity-20"></div>
         </div>
       </section>
 
@@ -934,7 +934,7 @@ const Home = () => {
             </button>
 
             {/* Carousel Container */}
-            <div className="flex transition-transform duration-500 ease-in-out overflow-hidden" style={{ transform: `translateX(-${currentTestimonial * 33.333}%)` }}>
+            <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentTestimonial * 33.333}%)` }}>
               {/* Carousel Slide 1 */}
               <div className="w-full flex-shrink-0">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4">
