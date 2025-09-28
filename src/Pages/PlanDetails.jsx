@@ -276,50 +276,50 @@ const PlanDetails = () => {
           </div>
         </nav>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Side - Gallery */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Main Image */}
-            <div className="aspect-[4/5] bg-gray-100 rounded-2xl shadow-sm overflow-hidden">
-              <div className="w-full h-full flex items-center justify-center text-8xl">
+            <div className="aspect-[4/5] bg-gray-100 rounded-xl sm:rounded-2xl shadow-sm overflow-hidden">
+              <div className="w-full h-full flex items-center justify-center text-6xl sm:text-7xl lg:text-8xl">
                 {selectedPlan.images[selectedImage]}
               </div>
             </div>
 
             {/* Thumbnail Gallery */}
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3 justify-center lg:justify-start">
               {selectedPlan.images.slice(0, 3).map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`aspect-square w-20 bg-gray-100 rounded-xl border-2 transition-all duration-200 flex items-center justify-center ${
+                  className={`aspect-square w-16 sm:w-20 bg-gray-100 rounded-lg sm:rounded-xl border-2 transition-all duration-200 flex items-center justify-center ${
                     selectedImage === index
                       ? 'border-emerald-500'
                       : 'border-gray-200'
                   }`}
                 >
-                  <span className="text-2xl">{image}</span>
+                  <span className="text-xl sm:text-2xl">{image}</span>
                 </button>
               ))}
             </div>
           </div>
 
           {/* Right Side - Content */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Header */}
-            <div className="flex justify-between items-start">
-              <div>
-                <h1 className="text-4xl font-bold text-slate-900 mb-2 font-['Poppins']">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2 font-['Poppins']">
                   {selectedPlan.name}
                 </h1>
                 <div className="flex items-center gap-2 text-slate-600 mb-4">
                   <span>🍎</span>
                   <span>🥭</span>
-                  <span className="ml-2">Fresh & Nutritious, Every Day</span>
+                  <span className="ml-2 text-sm sm:text-base">Fresh & Nutritious, Every Day</span>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="text-3xl font-bold text-slate-900">
+              <div className="text-left sm:text-right">
+                <div className="text-2xl sm:text-3xl font-bold text-slate-900">
                   ₹{selectedPlan.price.toLocaleString()}.00
                 </div>
                 <div className="text-slate-500 text-sm">
@@ -329,7 +329,7 @@ const PlanDetails = () => {
             </div>
 
             {/* Duration and Type */}
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
               <div>
                 <div className="text-sm text-slate-500 mb-1">Duration</div>
                 <div className="font-semibold text-slate-900">{selectedPlan.schedule}</div>
@@ -341,7 +341,7 @@ const PlanDetails = () => {
             </div>
 
             {/* What's included and Fruits you may get */}
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
               <div>
                 <h3 className="font-semibold text-slate-900 mb-3">What's included</h3>
                 <ul className="space-y-2">
@@ -394,53 +394,53 @@ const PlanDetails = () => {
               </div>
             </div>
 
-            {/* Nutritional Information */}
-            <div>
-              <h3 className="font-semibold text-slate-900 mb-4">Approx. nutrition per bowl</h3>
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-gray-100 rounded-lg p-3 text-center">
-                  <div className="text-lg font-semibold text-slate-900">250</div>
-                  <div className="text-sm text-slate-600">Calories</div>
+                {/* Nutritional Information */}
+                <div>
+                  <h3 className="font-semibold text-slate-900 mb-4">Approx. nutrition per bowl</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+                    <div className="bg-gray-100 rounded-lg p-2 sm:p-3 text-center">
+                      <div className="text-base sm:text-lg font-semibold text-slate-900">250</div>
+                      <div className="text-xs sm:text-sm text-slate-600">Calories</div>
+                    </div>
+                    <div className="bg-gray-100 rounded-lg p-2 sm:p-3 text-center">
+                      <div className="text-base sm:text-lg font-semibold text-slate-900">10g</div>
+                      <div className="text-xs sm:text-sm text-slate-600">Fiber</div>
+                    </div>
+                    <div className="bg-gray-100 rounded-lg p-2 sm:p-3 text-center">
+                      <div className="text-base sm:text-lg font-semibold text-slate-900">120%</div>
+                      <div className="text-xs sm:text-sm text-slate-600">Vitamin C</div>
+                    </div>
+                    <div className="bg-gray-100 rounded-lg p-2 sm:p-3 text-center">
+                      <div className="text-base sm:text-lg font-semibold text-slate-900">20%</div>
+                      <div className="text-xs sm:text-sm text-slate-600">Potassium</div>
+                    </div>
+                    <div className="bg-gray-100 rounded-lg p-2 sm:p-3 text-center col-span-2 sm:col-span-1">
+                      <div className="text-base sm:text-lg font-semibold text-slate-900">7g</div>
+                      <div className="text-xs sm:text-sm text-slate-600">Protein</div>
+                    </div>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-500 mt-3">
+                    Values are indicative and can vary with seasonal selection.
+                  </p>
                 </div>
-                <div className="bg-gray-100 rounded-lg p-3 text-center">
-                  <div className="text-lg font-semibold text-slate-900">10g</div>
-                  <div className="text-sm text-slate-600">Fiber</div>
-                </div>
-                <div className="bg-gray-100 rounded-lg p-3 text-center">
-                  <div className="text-lg font-semibold text-slate-900">120%</div>
-                  <div className="text-sm text-slate-600">Vitamin C</div>
-                </div>
-                <div className="bg-gray-100 rounded-lg p-3 text-center">
-                  <div className="text-lg font-semibold text-slate-900">20%</div>
-                  <div className="text-sm text-slate-600">Potassium</div>
-                </div>
-                <div className="bg-gray-100 rounded-lg p-3 text-center">
-                  <div className="text-lg font-semibold text-slate-900">7g</div>
-                  <div className="text-sm text-slate-600">Protein</div>
-                </div>
-              </div>
-              <p className="text-sm text-slate-500 mt-3">
-                Values are indicative and can vary with seasonal selection.
-              </p>
-            </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 pt-6">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6">
               <button
                 onClick={() => handlePlanSelect(selectedPlan)}
-                className="flex-1 px-6 py-3 bg-emerald-500 text-white font-medium rounded-lg hover:bg-emerald-600 transition-colors"
+                className="flex-1 px-4 sm:px-6 py-3 bg-emerald-500 text-white font-medium rounded-lg hover:bg-emerald-600 transition-colors text-sm sm:text-base"
               >
                 Add to cart
               </button>
               <button
                 onClick={() => navigate('/cart')}
-                className="px-6 py-3 border border-gray-300 text-slate-900 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                className="px-4 sm:px-6 py-3 border border-gray-300 text-slate-900 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm sm:text-base"
               >
                 Go to cart
               </button>
               <button
                 onClick={() => navigate('/plans')}
-                className="px-6 py-3 text-slate-900 font-medium hover:text-slate-600 transition-colors"
+                className="px-4 sm:px-6 py-3 text-slate-900 font-medium hover:text-slate-600 transition-colors text-sm sm:text-base"
               >
                 Back
               </button>

@@ -80,16 +80,16 @@ const Products = () => {
   const subcategories = getSubcategories(categoryFilter)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header Section */}
-      <section className="bg-gradient-to-br from-green-50 via-white to-yellow-50 pt-20 pb-12">
+      <section className="bg-gradient-to-br from-slate-50 via-white to-emerald-50 pt-16 sm:pt-20 pb-8 sm:pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 font-['Poppins']">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 sm:mb-4 font-['Poppins']">
               Premium Fruit Collection
             </h1>
             <div className="flex justify-center">
-              <p className="text-xl text-gray-600 text-center max-w-5xl px-6 lg:px-12 xl:px-16 pr-8 lg:pr-16 xl:pr-24 font-['Inter']">
+              <p className="text-base sm:text-lg lg:text-xl text-slate-600 text-center max-w-5xl px-4 sm:px-6 lg:px-12 xl:px-16 pr-4 sm:pr-8 lg:pr-16 xl:pr-24 font-['Inter']">
                 Discover our carefully curated selection of fresh, seasonal, and imported fruits. 
                 Quality guaranteed, delivered fresh to your doorstep.
               </p>
@@ -147,23 +147,23 @@ const Products = () => {
         <div className="lg:grid lg:grid-cols-12 lg:gap-8">
           {/* Desktop Filters Sidebar */}
           <div className="hidden lg:block lg:col-span-3">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-gray-900 font-['Poppins']">Filters</h2>
-                {(categoryFilter !== 'all' || availabilityFilter !== 'all' || priceFilter.min > 0 || priceFilter.max < 1000) && (
-                  <button
-                    onClick={clearFilters}
-                    className="text-sm text-green-600 hover:text-green-700 font-medium"
-                  >
-                    Clear All
-                  </button>
-                )}
-              </div>
+              <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-6 sticky top-24">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-lg font-bold text-slate-900 font-['Poppins']">Filters</h2>
+                  {(categoryFilter !== 'all' || availabilityFilter !== 'all' || priceFilter.min > 0 || priceFilter.max < 1000) && (
+                    <button
+                      onClick={clearFilters}
+                      className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                    >
+                      Clear All
+                    </button>
+                  )}
+                </div>
               
               <div className="space-y-8">
                 {/* Categories */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Categories</h3>
+                  <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Categories</h3>
                   <div className="space-y-3">
                     {categories.map(category => (
                       <label key={category.id} className="flex items-center cursor-pointer group">
@@ -173,16 +173,16 @@ const Products = () => {
                           value={category.id}
                           checked={categoryFilter === category.id}
                           onChange={(e) => setCategoryFilter(e.target.value)}
-                          className="text-green-600 focus:ring-green-500 border-gray-300"
+                          className="text-emerald-600 focus:ring-emerald-500 border-slate-300"
                         />
                         <div className="ml-3 flex items-center justify-between w-full">
                           <div className="flex items-center gap-2">
                             {category.icon && <span className="text-lg">{category.icon}</span>}
-                            <span className={`text-sm font-medium ${categoryFilter === category.id ? 'text-green-700' : 'text-gray-700 group-hover:text-gray-900'}`}>
+                            <span className={`text-sm font-medium ${categoryFilter === category.id ? 'text-emerald-700' : 'text-slate-700 group-hover:text-slate-900'}`}>
                               {category.name}
                             </span>
                           </div>
-                          <span className="text-xs text-gray-500 bg-gray-100 rounded-full px-2 py-1">
+                          <span className="text-xs text-slate-500 bg-slate-100 rounded-full px-2 py-1">
                             {category.count}
                           </span>
                         </div>
@@ -194,12 +194,12 @@ const Products = () => {
                 {/* Subcategories */}
                 {subcategories.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Types</h3>
+                    <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Types</h3>
                     <div className="space-y-2">
                       {subcategories.map(subcategory => (
                         <div key={subcategory.id} className="flex items-center justify-between">
-                          <span className="text-sm text-gray-600">{subcategory.name}</span>
-                          <span className="text-xs text-gray-500 bg-gray-100 rounded-full px-2 py-1">
+                          <span className="text-sm text-slate-600">{subcategory.name}</span>
+                          <span className="text-xs text-slate-500 bg-slate-100 rounded-full px-2 py-1">
                             {subcategory.count}
                           </span>
                         </div>
@@ -210,7 +210,7 @@ const Products = () => {
 
                 {/* Price Range */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Price Range</h3>
+                  <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Price Range</h3>
                   <div className="space-y-3">
                     {priceRanges.map(range => (
                       <label key={range.id} className="flex items-center cursor-pointer group">
@@ -219,12 +219,12 @@ const Products = () => {
                           name="priceRange"
                           checked={priceFilter.min === range.min && priceFilter.max === range.max}
                           onChange={() => setPriceFilter({ min: range.min, max: range.max })}
-                          className="text-green-600 focus:ring-green-500 border-gray-300"
+                          className="text-emerald-600 focus:ring-emerald-500 border-slate-300"
                         />
                         <span className={`ml-3 text-sm font-medium ${
                           priceFilter.min === range.min && priceFilter.max === range.max 
-                            ? 'text-green-700' 
-                            : 'text-gray-700 group-hover:text-gray-900'
+                            ? 'text-emerald-700' 
+                            : 'text-slate-700 group-hover:text-slate-900'
                         }`}>
                           {range.label}
                         </span>
@@ -233,8 +233,8 @@ const Products = () => {
                   </div>
                   
                   {/* Custom Price Range */}
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <h4 className="text-sm font-medium text-gray-900 mb-3">Custom Range</h4>
+                  <div className="mt-4 pt-4 border-t border-slate-200">
+                    <h4 className="text-sm font-medium text-slate-900 mb-3">Custom Range</h4>
                     <div className="flex items-center gap-2">
                       <div className="flex-1">
                         <input
@@ -242,17 +242,17 @@ const Products = () => {
                           placeholder="Min"
                           value={priceFilter.min || ''}
                           onChange={(e) => setPriceFilter(prev => ({ ...prev, min: parseInt(e.target.value) || 0 }))}
-                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                          className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                         />
                       </div>
-                      <span className="text-gray-400">-</span>
+                      <span className="text-slate-400">-</span>
                       <div className="flex-1">
                         <input
                           type="number"
                           placeholder="Max"
                           value={priceFilter.max === 1000 ? '' : priceFilter.max}
                           onChange={(e) => setPriceFilter(prev => ({ ...prev, max: parseInt(e.target.value) || 1000 }))}
-                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                          className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                         />
                       </div>
                     </div>
@@ -261,7 +261,7 @@ const Products = () => {
 
                 {/* Availability */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Availability</h3>
+                  <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Availability</h3>
                   <div className="space-y-3">
                     {[
                       { id: 'all', name: 'All Products', count: products.length },
@@ -275,17 +275,17 @@ const Products = () => {
                           value={option.id}
                           checked={availabilityFilter === option.id}
                           onChange={(e) => setAvailabilityFilter(e.target.value)}
-                          className="text-green-600 focus:ring-green-500 border-gray-300"
+                          className="text-emerald-600 focus:ring-emerald-500 border-slate-300"
                         />
                         <div className="ml-3 flex items-center justify-between w-full">
                           <span className={`text-sm font-medium ${
                             availabilityFilter === option.id 
-                              ? 'text-green-700' 
-                              : 'text-gray-700 group-hover:text-gray-900'
+                              ? 'text-emerald-700' 
+                              : 'text-slate-700 group-hover:text-slate-900'
                           }`}>
                             {option.name}
                           </span>
-                          <span className="text-xs text-gray-500 bg-gray-100 rounded-full px-2 py-1">
+                          <span className="text-xs text-slate-500 bg-slate-100 rounded-full px-2 py-1">
                             {option.count}
                           </span>
                         </div>
@@ -296,7 +296,7 @@ const Products = () => {
 
                 {/* Quick Actions */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Quick Filters</h3>
+                  <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Quick Filters</h3>
                   <div className="grid grid-cols-2 gap-2">
                     {[
                       { label: 'Premium', action: () => setCategoryFilter('imported') },
@@ -307,7 +307,7 @@ const Products = () => {
                       <button
                         key={index}
                         onClick={filter.action}
-                        className="px-3 py-2 text-xs font-medium bg-gray-100 text-gray-700 rounded-lg hover:bg-green-100 hover:text-green-700 transition-colors"
+                        className="px-3 py-2 text-xs font-medium bg-slate-100 text-slate-700 rounded-lg hover:bg-emerald-100 hover:text-emerald-700 transition-colors"
                       >
                         {filter.label}
                       </button>
@@ -320,13 +320,13 @@ const Products = () => {
           {/* Main Products Area */}
           <div className="lg:col-span-9">
             {/* Toolbar */}
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 mb-6">
+            <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-4 mb-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 {/* Mobile Filter Button */}
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => setShowMobileFilters(true)}
-                    className="lg:hidden flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="lg:hidden flex items-center gap-2 px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />

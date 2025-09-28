@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
 import { products, productCategories } from '../data/products'
 import ProductCard from '../components/ProductCard'
+import { scrollToTop } from '../utils/scrollToTop'
 
 // Image carousel component for plan cards
 const PlanImageCarousel = ({ images, planType }) => {
@@ -67,6 +68,7 @@ const PlanImageCarousel = ({ images, planType }) => {
 const Home = () => {
   const [activeTab, setActiveTab] = useState('regular')
   const [visibleCheckpoints, setVisibleCheckpoints] = useState(new Set())
+  const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const navigate = useNavigate()
   const { cartItemCount, wishlistCount, addPlanToCart } = useApp()
   const checkpointRefs = useRef([])
@@ -74,6 +76,90 @@ const Home = () => {
   // Get featured products and categories
   const featuredProducts = products.filter(product => product.featured).slice(0, 4)
   const featuredCategories = productCategories.filter(cat => cat.featured)
+
+  // Testimonials data
+  const testimonials = [
+    {
+      id: 1,
+      name: "Rajesh Sharma",
+      role: "Software Engineer, Banjara Hills",
+      initials: "RS",
+      color: "from-emerald-500 to-emerald-600",
+      content: "Fruitopia has completely changed my morning routine! The Standard plan delivers the freshest fruits right to my doorstep. The quality is consistently excellent and delivery is always on time."
+    },
+    {
+      id: 2,
+      name: "Priya Nair",
+      role: "Marketing Manager, HITEC City",
+      initials: "PN",
+      color: "from-blue-500 to-blue-600",
+      content: "As a working mom, I love how convenient Fruitopia is. The Premium plan gives my family all the nutrients we need without any hassle. The fruits are always fresh and perfectly ripe."
+    },
+    {
+      id: 3,
+      name: "Arjun Kumar",
+      role: "Fitness Trainer, Jubilee Hills",
+      initials: "AK",
+      color: "from-purple-500 to-purple-600",
+      content: "The Mini plan is perfect for my lifestyle. Fresh fruits delivered within 30 minutes - can't ask for more! The customer service is outstanding and the quality never disappoints."
+    },
+    {
+      id: 4,
+      name: "Sneha Mehta",
+      role: "Student, Gachibowli",
+      initials: "SM",
+      color: "from-rose-500 to-rose-600",
+      content: "I was skeptical about fruit delivery initially. But Fruitopia proved me wrong! The Trial plan was so good that I upgraded to Standard immediately. Best decision ever!"
+    },
+    {
+      id: 5,
+      name: "Vikram Patel",
+      role: "Business Owner, Secunderabad",
+      initials: "VP",
+      color: "from-indigo-500 to-indigo-600",
+      content: "The Premium plan is worth every rupee! My family has never eaten fresher fruits. The variety and quality are exceptional, and the delivery service is incredibly reliable."
+    },
+    {
+      id: 6,
+      name: "Kavya Reddy",
+      role: "Doctor, Cyberabad",
+      initials: "KR",
+      color: "from-orange-500 to-orange-600",
+      content: "Fruitopia's delivery is lightning fast! The fruits are always fresh and perfectly ripe. It's become an essential part of my healthy lifestyle. Highly recommended for busy professionals."
+    },
+    {
+      id: 7,
+      name: "Suresh Kumar",
+      role: "Port Manager, Visakhapatnam",
+      initials: "SK",
+      color: "from-teal-500 to-teal-600",
+      content: "Working in the port city, I need reliable fruit delivery. Fruitopia never fails! The Standard plan keeps me healthy with fresh fruits delivered right to my office. Excellent service!"
+    },
+    {
+      id: 8,
+      name: "Lakshmi Devi",
+      role: "Teacher, Kakinada",
+      initials: "LD",
+      color: "from-pink-500 to-pink-600",
+      content: "As a teacher, I appreciate the convenience of Fruitopia. The Mini plan is perfect for my needs. Fresh fruits delivered to my home every day - it's like having a personal fruit vendor!"
+    },
+    {
+      id: 9,
+      name: "Ravi Teja",
+      role: "Business Analyst, Vijayawada",
+      initials: "RT",
+      color: "from-cyan-500 to-cyan-600",
+      content: "Fruitopia has transformed my daily routine! The Premium plan delivers exceptional quality fruits. Living in Vijayawada, I never thought I'd get such fresh fruits delivered to my doorstep."
+    }
+  ]
+
+  // Auto-rotate testimonials
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % Math.ceil(testimonials.length / 3))
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [testimonials.length])
 
   // Handle plan selection
   const handlePlanSelect = (planType, planName, price, duration) => {
@@ -121,9 +207,9 @@ const Home = () => {
   }, [])
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden w-full max-w-full">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50 w-full max-w-full">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="w-full h-full" style={{
@@ -133,18 +219,18 @@ const Home = () => {
         </div>
 
         {/* Floating Fruit Illustrations */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 text-6xl animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}>🍎</div>
-          <div className="absolute top-40 right-20 text-5xl animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}>🍊</div>
-          <div className="absolute bottom-40 left-20 text-4xl animate-bounce" style={{ animationDelay: '2s', animationDuration: '3.5s' }}>🍓</div>
-          <div className="absolute bottom-20 right-10 text-5xl animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4.5s' }}>🥭</div>
-          <div className="absolute top-1/2 left-5 text-3xl animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '3.8s' }}>🍇</div>
-          <div className="absolute top-1/3 right-5 text-4xl animate-bounce" style={{ animationDelay: '2.5s', animationDuration: '4.2s' }}>🥝</div>
+        <div className="absolute inset-0 pointer-events-none hidden sm:block">
+          <div className="absolute top-20 left-4 sm:left-10 text-4xl sm:text-6xl animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}>🍎</div>
+          <div className="absolute top-40 right-4 sm:right-20 text-3xl sm:text-5xl animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}>🍊</div>
+          <div className="absolute bottom-40 left-4 sm:left-20 text-2xl sm:text-4xl animate-bounce" style={{ animationDelay: '2s', animationDuration: '3.5s' }}>🍓</div>
+          <div className="absolute bottom-20 right-4 sm:right-10 text-3xl sm:text-5xl animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4.5s' }}>🥭</div>
+          <div className="absolute top-1/2 left-2 sm:left-5 text-2xl sm:text-3xl animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '3.8s' }}>🍇</div>
+          <div className="absolute top-1/3 right-2 sm:right-5 text-2xl sm:text-4xl animate-bounce" style={{ animationDelay: '2.5s', animationDuration: '4.2s' }}>🥝</div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 text-center">
-          <div className="space-y-8 animate-fade-in">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight text-slate-900 font-['Poppins']">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 text-center">
+          <div className="space-y-6 sm:space-y-8 animate-fade-in">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-slate-900 font-['Poppins']">
               <span className="block">Freshly Cut Fruits,</span>
               <span className="block bg-gradient-to-r from-emerald-600 to-emerald-500 bg-clip-text text-transparent">
                 Delivered to You
@@ -152,42 +238,49 @@ const Home = () => {
             </h1>
 
             <div className="flex justify-center">
-              <p className="text-xl sm:text-2xl text-slate-600 max-w-3xl text-center leading-relaxed font-['Inter']">
-                Healthy, delicious, and ready-to-eat fruit platters delivered fresh to your doorstep in under 30 minutes.
-              </p>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-600 max-w-3xl text-center leading-relaxed font-['Inter'] px-4">
+              Healthy, delicious, and ready-to-eat fruit platters delivered fresh to your doorstep in under 30 minutes.
+            </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-6 sm:pt-8">
               <button
-                onClick={() => navigate('/plans')}
-                className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                onClick={() => {
+                  navigate('/plans')
+                  scrollToTop('smooth')
+                }}
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-base sm:text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 View Plans 🚀
               </button>
               <button
-                onClick={() => navigate('/products')}
-                className="px-8 py-4 bg-white border-2 border-emerald-500 text-emerald-600 text-lg font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300"
+                onClick={() => {
+                  navigate('/products')
+                  scrollToTop('smooth')
+                }}
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-white border-2 border-emerald-500 text-emerald-600 text-base sm:text-lg font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300"
               >
                 Browse Products
               </button>
             </div>
 
-            <div className="flex items-center justify-center gap-12 pt-12 text-sm text-slate-600">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 lg:gap-12 pt-8 sm:pt-12 text-xs sm:text-sm text-slate-600">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-emerald-500 rounded-full animate-pulse"></div>
                 <span>Fresh Daily</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
                 <span>30min Delivery</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-rose-500 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-rose-500 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
                 <span>100% Natural</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-indigo-500 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-                <span>Cart ({cartItemCount}) | Wishlist ({wishlistCount})</span>
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-indigo-500 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+                <span className="hidden sm:inline">Cart ({cartItemCount}) | Wishlist ({wishlistCount})</span>
+                <span className="sm:hidden">Cart ({cartItemCount})</span>
               </div>
             </div>
           </div>
@@ -195,21 +288,21 @@ const Home = () => {
       </section>
 
       {/* Plans Section */}
-      <section className="py-12 bg-gradient-to-br from-slate-50 via-white to-emerald-50">
+      <section className="py-8 sm:py-12 bg-gradient-to-br from-slate-50 via-white to-emerald-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div>
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 text-emerald-700 text-sm font-medium rounded-full mb-4">
+            <div className="text-center mb-8 sm:mb-12">
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
                 <span>🎯</span>
                 <span>Choose Your Perfect Plan</span>
               </div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4 font-['Poppins']">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4 font-['Poppins']">
                 Subscription Plans
               </h2>
               <div className="flex justify-center">
-                <p className="text-lg text-slate-600 max-w-3xl text-center font-['Inter']">
-                  Fresh fruit bowls delivered to your doorstep. Pick the plan that fits your lifestyle and dietary needs.
-                </p>
+                <p className="text-base sm:text-lg text-slate-600 max-w-3xl text-center font-['Inter'] px-4">
+                Fresh fruit bowls delivered to your doorstep. Pick the plan that fits your lifestyle and dietary needs.
+              </p>
               </div>
             </div>
 
@@ -301,9 +394,9 @@ const Home = () => {
                       {plan.popular && (
                         <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-20">
                           <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-1 rounded-full text-xs font-medium shadow-sm">
-                            ⭐ Most Popular
-                          </span>
-                        </div>
+                        ⭐ Most Popular
+                      </span>
+                    </div>
                       )}
 
                       <PlanImageCarousel images={plan.images} planType={plan.name} />
@@ -316,7 +409,7 @@ const Home = () => {
                             ₹{plan.price.toLocaleString()}
                             <span className="text-sm font-normal text-slate-500"> / {plan.duration}</span>
                           </div>
-                        </div>
+                      </div>
 
                         <p className="text-slate-600 text-xs leading-relaxed mb-4 line-clamp-3">
                           {plan.description}
@@ -327,24 +420,26 @@ const Home = () => {
                             <div key={index} className="flex items-center gap-2">
                               <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full flex-shrink-0"></div>
                               <span className="text-xs text-slate-700">{feature}</span>
-                            </div>
-                          ))}
                         </div>
+                          ))}
+                      </div>
 
-                        <div className="space-y-2">
-                          <button
-                            onClick={() => navigate(`/plan/${plan.id}`)}
-                            className="w-full px-4 py-2 border-2 border-emerald-500 text-emerald-600 font-medium rounded-lg hover:bg-emerald-50 transition-all duration-300 text-sm"
-                          >
-                            View More Details
-                          </button>
-                          <button
+                        <div className="space-y-3">
+                      <button
                             onClick={() => handlePlanSelect(plan.id, plan.name, plan.price, plan.duration)}
                             className="w-full px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
-                          >
+                      >
                             Choose {plan.name}
-                          </button>
-                        </div>
+                      </button>
+                          <div className="text-center">
+                      <button
+                              onClick={() => navigate(`/plan/${plan.id}`)}
+                              className="text-emerald-600 hover:text-emerald-700 text-sm font-medium underline hover:no-underline transition-all duration-200"
+                      >
+                              View More Details
+                      </button>
+                    </div>
+                  </div>
                       </div>
                     </div>
                   ))}
@@ -397,9 +492,9 @@ const Home = () => {
                       {plan.popular && (
                         <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-20">
                           <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-1 rounded-full text-xs font-medium shadow-sm">
-                            ⭐ Most Popular Mini
-                          </span>
-                        </div>
+                        ⭐ Most Popular Mini
+                      </span>
+                    </div>
                       )}
 
                       <PlanImageCarousel images={plan.images} planType={plan.name} />
@@ -412,7 +507,7 @@ const Home = () => {
                             ₹{plan.price.toLocaleString()}
                             <span className="text-sm font-normal text-slate-500"> / {plan.duration}</span>
                           </div>
-                        </div>
+                      </div>
 
                         <p className="text-slate-600 text-xs leading-relaxed mb-4 line-clamp-3">
                           {plan.description}
@@ -423,63 +518,68 @@ const Home = () => {
                             <div key={index} className="flex items-center gap-2">
                               <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full flex-shrink-0"></div>
                               <span className="text-xs text-slate-700">{feature}</span>
-                            </div>
-                          ))}
                         </div>
+                          ))}
+                      </div>
 
-                        <div className="space-y-2">
-                          <button
-                            onClick={() => navigate(`/plan/${plan.id}`)}
-                            className="w-full px-4 py-2 border-2 border-emerald-500 text-emerald-600 font-medium rounded-lg hover:bg-emerald-50 transition-all duration-300 text-sm"
-                          >
-                            View More Details
-                          </button>
-                          <button
+                        <div className="space-y-3">
+                      <button
                             onClick={() => handlePlanSelect(plan.id, plan.name, plan.price, plan.duration)}
                             className="w-full px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
                           >
                             Choose {plan.name}
                           </button>
+                          <div className="text-center">
+                            <button
+                              onClick={() => navigate(`/plan/${plan.id}`)}
+                              className="text-emerald-600 hover:text-emerald-700 text-sm font-medium underline hover:no-underline transition-all duration-200"
+                            >
+                              View More Details
+                      </button>
+                    </div>
+                  </div>
+                      </div>
+                        </div>
+                  ))}
+                        </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
 
             {/* View All Plans Button */}
             <div className="text-center mt-8">
-              <button
-                onClick={() => navigate('/plans')}
+                      <button
+                onClick={() => {
+                  navigate('/plans')
+                  scrollToTop('smooth')
+                }}
                 className="px-6 py-2.5 bg-white border-2 border-emerald-500 text-emerald-600 font-medium rounded-lg hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md text-sm"
-              >
+                      >
                 View All Plans & Compare
-              </button>
+                      </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Journey Timeline Section */}
-      <section className="py-20 bg-white relative overflow-hidden">
+          {/* Journey Timeline Section */}
+          <section className="py-12 sm:py-16 lg:py-20 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 font-['Poppins']">
-              Our Fruit Journey
-            </h2>
-            <div className="flex justify-center">
-              <p className="text-xl text-slate-600 max-w-3xl text-center font-['Inter']">
-                From farm to your doorstep, discover how we ensure every fruit reaches you at its absolute best.
+              <div className="text-center mb-12 sm:mb-16">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-900 mb-4 sm:mb-6 font-['Poppins']">
+                  Our Fruit Journey
+              </h2>
+                <div className="flex justify-center">
+                  <p className="text-base sm:text-lg lg:text-xl text-slate-600 max-w-3xl text-center font-['Inter'] px-4">
+                    From farm to your doorstep, discover how we ensure every fruit reaches you at its absolute best.
               </p>
+                </div>
             </div>
-          </div>
 
           {/* Interactive Timeline */}
           <div className="relative">
             {/* Curved Path */}
-            <div className="hidden lg:block absolute inset-0 pointer-events-none">
-              <svg className="w-full h-full" viewBox="0 0 1200 800" preserveAspectRatio="none">
+            <div className="hidden lg:block absolute inset-0 pointer-events-none overflow-hidden">
+              <svg className="w-full h-full max-w-full" viewBox="0 0 1200 800" preserveAspectRatio="none">
                 <path
                   id="journey-path"
                   d="M 50 200 Q 300 100 600 200 T 1150 200"
@@ -506,8 +606,8 @@ const Home = () => {
               </svg>
             </div>
 
-            {/* Journey Steps */}
-            <div className="grid lg:grid-cols-6 gap-8 lg:gap-4 relative z-10">
+                {/* Journey Steps */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 sm:gap-8 lg:gap-4 relative z-10">
               {[
                 {
                   step: 1,
@@ -586,10 +686,10 @@ const Home = () => {
                     <div className="w-0.5 h-8 bg-gradient-to-b from-emerald-400 to-emerald-600"></div>
                   </div>
 
-                  {/* Journey Card */}
-                  <div className={`relative bg-gradient-to-br ${journey.color} rounded-2xl p-6 border-2 ${journey.borderColor} shadow-sm hover:shadow-lg transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2 ${
-                    visibleCheckpoints.has(index) ? 'float-animation' : ''
-                  }`}>
+                      {/* Journey Card */}
+                      <div className={`relative bg-gradient-to-br ${journey.color} rounded-xl sm:rounded-2xl p-4 sm:p-6 border-2 ${journey.borderColor} shadow-sm hover:shadow-lg transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2 ${
+                        visibleCheckpoints.has(index) ? 'float-animation' : ''
+                      }`}>
                     {/* Step Number */}
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                       <div className={`w-8 h-8 ${journey.iconBg} ${journey.borderColor} border-2 rounded-full flex items-center justify-center font-bold text-sm ${journey.iconText}`}>
@@ -597,22 +697,22 @@ const Home = () => {
                       </div>
                     </div>
 
-                    {/* Icon */}
-                    <div className="text-center mb-4 mt-4">
-                      <div className={`w-16 h-16 ${journey.iconBg} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                        <span className="text-2xl">{journey.icon}</span>
-                      </div>
-                    </div>
+                        {/* Icon */}
+                        <div className="text-center mb-3 sm:mb-4 mt-3 sm:mt-4">
+                          <div className={`w-12 h-12 sm:w-16 sm:h-16 ${journey.iconBg} rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                            <span className="text-xl sm:text-2xl">{journey.icon}</span>
+                          </div>
+                        </div>
 
-                    {/* Content */}
-                    <div className="text-center">
-                      <h3 className="text-lg font-bold text-slate-900 mb-3 font-['Poppins'] group-hover:text-emerald-600 transition-colors">
-                        {journey.title}
-                      </h3>
-                      <p className="text-sm text-slate-600 leading-relaxed font-['Inter']">
-                        {journey.description}
-                      </p>
-                    </div>
+                        {/* Content */}
+                        <div className="text-center">
+                          <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2 sm:mb-3 font-['Poppins'] group-hover:text-emerald-600 transition-colors">
+                            {journey.title}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-['Inter']">
+                            {journey.description}
+                          </p>
+                        </div>
 
                     {/* Animated Progress Dot */}
                     <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
@@ -646,15 +746,15 @@ const Home = () => {
                 <div className={`w-3 h-3 bg-emerald-500 rounded-full transition-all duration-500 ${
                   visibleCheckpoints.size > 0 ? 'animate-pulse' : ''
                 }`}></div>
-              </div>
+          </div>
             </div>
           </div>
         </div>
 
         {/* Background Decoration */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-100 rounded-full opacity-20"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-100 rounded-full opacity-20"></div>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none w-full max-w-full">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-100 rounded-full opacity-20 max-w-full"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-100 rounded-full opacity-20 max-w-full"></div>
         </div>
       </section>
 
@@ -668,8 +768,8 @@ const Home = () => {
               </h2>
               <div className="flex justify-center">
                 <p className="text-xl text-slate-600 max-w-3xl text-center font-['Inter']">
-                  Browse our carefully curated selection of fresh fruits organized by category.
-                </p>
+                Browse our carefully curated selection of fresh fruits organized by category.
+              </p>
               </div>
             </div>
 
@@ -726,8 +826,8 @@ const Home = () => {
               </h2>
               <div className="flex justify-center">
                 <p className="text-xl text-slate-600 max-w-3xl text-center font-['Inter']">
-                  Discover our handpicked selection of the finest seasonal fruits, available now.
-                </p>
+                Discover our handpicked selection of the finest seasonal fruits, available now.
+              </p>
               </div>
             </div>
 
@@ -767,23 +867,207 @@ const Home = () => {
             </h2>
             <div className="flex justify-center mb-10">
               <p className="text-xl text-emerald-100 max-w-3xl text-center font-['Inter']">
-                Order now and get fresh, quality fruits delivered to your doorstep. Fast delivery guaranteed!
-              </p>
+              Order now and get fresh, quality fruits delivered to your doorstep. Fast delivery guaranteed!
+            </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <button 
-                onClick={() => navigate('/plans')}
+                onClick={() => {
+                  navigate('/plans')
+                  scrollToTop('smooth')
+                }}
                 className="px-10 py-4 bg-white text-emerald-600 text-lg font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 View Plans 🛒
               </button>
               <button 
-                onClick={() => navigate('/products')}
+                onClick={() => {
+                  navigate('/products')
+                  scrollToTop('smooth')
+                }}
                 className="px-10 py-4 bg-transparent border-2 border-white text-white text-lg font-medium rounded-xl hover:bg-white hover:text-emerald-600 transition-all duration-300"
               >
                 Browse Products
               </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4">
+              <span>⭐</span>
+              <span>What Our Customers Say</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4 font-['Poppins']">
+              Loved Across Telugu States
+            </h2>
+            <div className="flex justify-center">
+              <p className="text-base sm:text-lg text-slate-600 max-w-3xl text-center font-['Inter'] px-4">
+                Real stories from our satisfied customers across Hyderabad, Visakhapatnam, Kakinada, and Vijayawada.
+              </p>
+            </div>
+          </div>
+
+          {/* Testimonials Carousel */}
+          <div className="relative overflow-hidden">
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => setCurrentTestimonial((prev) => prev === 0 ? Math.ceil(testimonials.length / 3) - 1 : prev - 1)}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-all duration-200"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setCurrentTestimonial((prev) => (prev + 1) % Math.ceil(testimonials.length / 3))}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-all duration-200"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            {/* Carousel Container */}
+            <div className="flex transition-transform duration-500 ease-in-out overflow-hidden" style={{ transform: `translateX(-${currentTestimonial * 33.333}%)` }}>
+              {/* Carousel Slide 1 */}
+              <div className="w-full flex-shrink-0">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4">
+                  {testimonials.slice(0, 3).map((testimonial) => (
+                    <div key={testimonial.id} className="bg-slate-50 rounded-xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all duration-300 border border-slate-200">
+                      <div className="flex items-center mb-4">
+                        <div className="flex text-yellow-400">
+                          {[...Array(5)].map((_, i) => (
+                            <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                              <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                            </svg>
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-slate-700 text-sm sm:text-base leading-relaxed mb-6 font-['Inter']">
+                        "{testimonial.content}"
+                      </p>
+                      <div className="flex items-center">
+                        <div className={`w-10 h-10 bg-gradient-to-r ${testimonial.color} rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3`}>
+                          {testimonial.initials}
+                        </div>
+                        <div>
+                          <div className="font-semibold text-slate-900 text-sm sm:text-base">{testimonial.name}</div>
+                          <div className="text-slate-500 text-xs sm:text-sm">{testimonial.role}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Carousel Slide 2 */}
+              <div className="w-full flex-shrink-0">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4">
+                  {testimonials.slice(3, 6).map((testimonial) => (
+                    <div key={testimonial.id} className="bg-slate-50 rounded-xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all duration-300 border border-slate-200">
+                      <div className="flex items-center mb-4">
+                        <div className="flex text-yellow-400">
+                          {[...Array(5)].map((_, i) => (
+                            <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                              <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                            </svg>
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-slate-700 text-sm sm:text-base leading-relaxed mb-6 font-['Inter']">
+                        "{testimonial.content}"
+                      </p>
+                      <div className="flex items-center">
+                        <div className={`w-10 h-10 bg-gradient-to-r ${testimonial.color} rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3`}>
+                          {testimonial.initials}
+                        </div>
+                        <div>
+                          <div className="font-semibold text-slate-900 text-sm sm:text-base">{testimonial.name}</div>
+                          <div className="text-slate-500 text-xs sm:text-sm">{testimonial.role}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Carousel Slide 3 */}
+              <div className="w-full flex-shrink-0">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4">
+                  {testimonials.slice(6, 9).map((testimonial) => (
+                    <div key={testimonial.id} className="bg-slate-50 rounded-xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all duration-300 border border-slate-200">
+                      <div className="flex items-center mb-4">
+                        <div className="flex text-yellow-400">
+                          {[...Array(5)].map((_, i) => (
+                            <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                              <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                            </svg>
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-slate-700 text-sm sm:text-base leading-relaxed mb-6 font-['Inter']">
+                        "{testimonial.content}"
+                      </p>
+                      <div className="flex items-center">
+                        <div className={`w-10 h-10 bg-gradient-to-r ${testimonial.color} rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3`}>
+                          {testimonial.initials}
+                        </div>
+                        <div>
+                          <div className="font-semibold text-slate-900 text-sm sm:text-base">{testimonial.name}</div>
+                          <div className="text-slate-500 text-xs sm:text-sm">{testimonial.role}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Carousel Indicators */}
+            <div className="flex justify-center mt-8 gap-2">
+              {[...Array(Math.ceil(testimonials.length / 3))].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentTestimonial(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                    currentTestimonial === index 
+                      ? 'bg-emerald-500 scale-125' 
+                      : 'bg-slate-300 hover:bg-slate-400'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="mt-12 sm:mt-16 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 text-sm font-medium rounded-full mb-4">
+              <span>🏆</span>
+              <span>Trusted by 5000+ Happy Customers</span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mt-8">
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">4.9/5</div>
+                <div className="text-sm text-slate-600">Average Rating</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">30min</div>
+                <div className="text-sm text-slate-600">Avg Delivery Time</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">99.8%</div>
+                <div className="text-sm text-slate-600">Fresh Guarantee</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">24/7</div>
+                <div className="text-sm text-slate-600">Customer Support</div>
+              </div>
             </div>
           </div>
         </div>
@@ -982,8 +1266,8 @@ const Home = () => {
               </h2>
               <div className="flex justify-center">
                 <p className="text-xl text-slate-600 max-w-3xl text-center font-['Inter']">
-                  Have questions? We're here to help you get the freshest fruits delivered to your door.
-                </p>
+                Have questions? We're here to help you get the freshest fruits delivered to your door.
+              </p>
               </div>
             </div>
 

@@ -265,19 +265,21 @@ const Plans = () => {
                     ))}
                   </div>
 
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => navigate(`/plan/${plan.id}`)}
-                      className="w-full px-4 py-2 border-2 border-emerald-500 text-emerald-600 font-medium rounded-lg hover:bg-emerald-50 transition-all duration-300 text-sm"
-                    >
-                      View More Details
-                    </button>
+                  <div className="space-y-3">
                     <button
                       onClick={() => handlePlanSelect(plan.id, plan.name, plan.price, plan.duration)}
                       className="w-full px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
                     >
                       Choose {plan.name}
                     </button>
+                    <div className="text-center">
+                      <button
+                        onClick={() => navigate(`/plan/${plan.id}`)}
+                        className="text-emerald-600 hover:text-emerald-700 text-sm font-medium underline hover:no-underline transition-all duration-200"
+                      >
+                        View More Details
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
