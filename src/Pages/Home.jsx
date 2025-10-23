@@ -209,7 +209,7 @@ const Home = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50">
+      <section className="relative min-h-screen flex items-start justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50 pt-24 sm:pt-28">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="w-full h-full" style={{
@@ -218,17 +218,7 @@ const Home = () => {
           }}></div>
         </div>
 
-        {/* Floating Fruit Illustrations */}
-        <div className="absolute inset-0 pointer-events-none hidden sm:block">
-          <div className="absolute top-20 left-4 sm:left-10 text-4xl sm:text-6xl animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}>🍎</div>
-          <div className="absolute top-40 right-4 sm:right-20 text-3xl sm:text-5xl animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}>🍊</div>
-          <div className="absolute bottom-40 left-4 sm:left-20 text-2xl sm:text-4xl animate-bounce" style={{ animationDelay: '2s', animationDuration: '3.5s' }}>🍓</div>
-          <div className="absolute bottom-20 right-4 sm:right-10 text-3xl sm:text-5xl animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4.5s' }}>🥭</div>
-          <div className="absolute top-1/2 left-2 sm:left-5 text-2xl sm:text-3xl animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '3.8s' }}>🍇</div>
-          <div className="absolute top-1/3 right-2 sm:right-5 text-2xl sm:text-4xl animate-bounce" style={{ animationDelay: '2.5s', animationDuration: '4.2s' }}>🥝</div>
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 text-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="space-y-6 sm:space-y-8 animate-fade-in">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-slate-900 font-['Poppins']">
               <span className="block">Freshly Cut Fruits,</span>
