@@ -29,6 +29,10 @@ const ACTION_TYPES = {
   SET_USER_PREFERENCES: 'SET_USER_PREFERENCES',
   SET_DELIVERY_ADDRESS: 'SET_DELIVERY_ADDRESS',
   
+  // User authentication
+  SET_USER: 'SET_USER',
+  LOGOUT: 'LOGOUT',
+  
   // UI state
   SET_MOBILE_MENU_OPEN: 'SET_MOBILE_MENU_OPEN',
   SET_CART_SIDEBAR_OPEN: 'SET_CART_SIDEBAR_OPEN',
@@ -61,6 +65,9 @@ const initialState = {
     deliveryPreference: 'standard'
   },
   deliveryAddress: null,
+  
+  // User authentication
+  user: null,
   
   // UI state
   isMobileMenuOpen: false,
@@ -315,6 +322,19 @@ const appReducer = (state, action) => {
         deliveryAddress: action.payload.address
       }
     
+    // User authentication
+    case ACTION_TYPES.SET_USER:
+      return {
+        ...state,
+        user: action.payload.user
+      }
+    
+    case ACTION_TYPES.LOGOUT:
+      return {
+        ...state,
+        user: null
+      }
+    
     // UI state
     case ACTION_TYPES.SET_MOBILE_MENU_OPEN:
       return {
@@ -360,7 +380,8 @@ const STORAGE_KEYS = {
   CART: 'fruitopia_cart',
   WISHLIST: 'fruitopia_wishlist',
   USER_PREFERENCES: 'fruitopia_user_preferences',
-  DELIVERY_ADDRESS: 'fruitopia_delivery_address'
+  DELIVERY_ADDRESS: 'fruitopia_delivery_address',
+  USER: 'fruitopia_user'
 }
 
 // Context creation
@@ -377,6 +398,7 @@ export const AppProvider = ({ children }) => {
       const savedWishlist = localStorage.getItem(STORAGE_KEYS.WISHLIST)
       const savedPreferences = localStorage.getItem(STORAGE_KEYS.USER_PREFERENCES)
       const savedAddress = localStorage.getItem(STORAGE_KEYS.DELIVERY_ADDRESS)
+      const savedUser = localStorage.getItem(STORAGE_KEYS.USER)
       
       if (savedCart) {
         const cart = JSON.parse(savedCart)
@@ -409,6 +431,13 @@ export const AppProvider = ({ children }) => {
         dispatch({
           type: ACTION_TYPES.SET_DELIVERY_ADDRESS,
           payload: { address: JSON.parse(savedAddress) }
+        })
+      }
+      
+      if (savedUser) {
+        dispatch({
+          type: ACTION_TYPES.SET_USER,
+          payload: { user: JSON.parse(savedUser) }
         })
       }
     } catch (error) {
@@ -450,6 +479,18 @@ export const AppProvider = ({ children }) => {
       console.error('Error saving address to localStorage:', error)
     }
   }, [state.deliveryAddress])
+  
+  useEffect(() => {
+    try {
+      if (state.user) {
+        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(state.user))
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.USER)
+      }
+    } catch (error) {
+      console.error('Error saving user to localStorage:', error)
+    }
+  }, [state.user])
   
   // Action creators
   const actions = {
@@ -539,6 +580,14 @@ export const AppProvider = ({ children }) => {
       type: ACTION_TYPES.SET_DELIVERY_ADDRESS,
       payload: { address }
     }),
+    
+    // User authentication
+    setUser: (user) => dispatch({
+      type: ACTION_TYPES.SET_USER,
+      payload: { user }
+    }),
+    
+    logout: () => dispatch({ type: ACTION_TYPES.LOGOUT }),
     
     // UI actions
     setMobileMenuOpen: (isOpen) => dispatch({

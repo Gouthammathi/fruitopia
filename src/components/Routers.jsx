@@ -10,6 +10,9 @@ import Contact from '../Pages/Contact'
 import Cart from '../Pages/Cart'
 import Checkout from '../Pages/Checkout'
 import Wishlist from '../Pages/Wishlist'
+import Login from '../Pages/Login'
+import Signup from '../Pages/Signup'
+import Profile from '../Pages/Profile'
 
 const router = createBrowserRouter([
   {
@@ -25,6 +28,9 @@ const router = createBrowserRouter([
       { path: 'cart', element: <Cart /> },
       { path: 'checkout', element: <Checkout /> },
       { path: 'wishlist', element: <Wishlist /> },
+      { path: 'login', element: <Login /> },
+      { path: 'signup', element: <Signup /> },
+      { path: 'profile', element: <Profile /> },
     ],
   },
 ])

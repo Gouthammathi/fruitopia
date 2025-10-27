@@ -1285,7 +1285,7 @@ const Home = () => {
       </section>
 
       {/* Custom CSS for animations */}
-      <style jsx>{`
+      <style>{`
         .animate-fade-in {
           animation: fadeIn 1s ease-out;
         }

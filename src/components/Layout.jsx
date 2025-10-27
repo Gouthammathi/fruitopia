@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
+import CartSidebar from './CartSidebar'
 import { scrollToTop } from '../utils/scrollToTop'
 
 const Layout = () => {
@@ -21,6 +22,7 @@ const Layout = () => {
       </main>
 
       <Footer />
+      <CartSidebar />
     </div>
   )
 }
