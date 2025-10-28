@@ -66,6 +66,7 @@ const PlanImageCarousel = ({ images, planType }) => {
 
 const Plans = () => {
   const [activeTab, setActiveTab] = useState('regular')
+  const [openFAQ, setOpenFAQ] = useState(null)
   const navigate = useNavigate()
   const { addPlanToCart } = useApp()
 
@@ -332,42 +333,73 @@ const Plans = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-8 bg-slate-50">
+      {/* FAQ Section - Accordion */}
+      <section className="py-12 bg-slate-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
               Frequently Asked Questions
             </h2>
-            <div className="flex justify-center">
-              <p className="text-base text-slate-600 text-center">
-                Everything you need to know about our subscription plans
-              </p>
-            </div>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Everything you need to know about our subscription plans
+            </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {[
               {
                 question: "How does the subscription work?",
-                answer: "Once you choose a plan, we'll deliver fresh fruit bowls according to your selected schedule. You can pause, modify, or cancel your subscription anytime."
+                answer: "Once you choose a plan, we'll deliver fresh fruit bowls according to your selected schedule. You can pause, modify, or cancel your subscription anytime through your account dashboard."
               },
               {
                 question: "What if I don't like a fruit?",
-                answer: "We provide a variety of fruits in each bowl. If you have specific preferences or allergies, please mention them in your order notes."
+                answer: "We provide a variety of fruits in each bowl. If you have specific preferences or allergies, please mention them in your order notes, and we'll customize your selection accordingly."
               },
               {
                 question: "Can I change my delivery schedule?",
-                answer: "Yes, you can modify your delivery schedule, skip deliveries, or change your plan anytime through your account dashboard."
+                answer: "Yes, you can modify your delivery schedule, skip deliveries, or change your plan anytime through your account dashboard. Changes take effect from the next delivery cycle."
               },
               {
                 question: "Is there a minimum subscription period?",
-                answer: "No, there's no minimum commitment. You can cancel your subscription anytime without any penalties."
+                answer: "No, there's no minimum commitment. You can cancel your subscription anytime without any penalties or cancellation fees."
+              },
+              {
+                question: "How fresh are the fruits?",
+                answer: "We source our fruits daily from local farms and deliver them within 24 hours of harvest. Our cold chain ensures maximum freshness and nutritional value."
+              },
+              {
+                question: "What if I'm not satisfied with my order?",
+                answer: "We offer a 100% satisfaction guarantee. If you're not happy with your order, contact us within 24 hours and we'll provide a full refund or replacement."
               }
             ].map((faq, index) => (
-              <div key={index} className="bg-white rounded-xl p-4 shadow-sm border border-slate-200 text-center">
-                <h3 className="text-base font-semibold text-slate-900 mb-2">{faq.question}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{faq.answer}</p>
+              <div key={index} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <button
+                  onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                  className="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-slate-50 transition-colors duration-200"
+                >
+                  <h3 className="text-sm font-medium text-slate-900 flex-1 pr-3">
+                    {faq.question}
+                  </h3>
+                  <div className={`flex-shrink-0 transition-transform duration-300 ${
+                    openFAQ === index ? 'rotate-180' : 'rotate-0'
+                  }`}>
+                    <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </button>
+                
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  openFAQ === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}>
+                  <div className="px-4 pb-3">
+                    <div className="border-t border-slate-100 pt-3">
+                      <p className="text-sm text-slate-600 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
