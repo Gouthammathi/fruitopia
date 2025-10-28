@@ -66,10 +66,10 @@
 }
 
 html {
-  transform: scale(0.8);
+  transform: scale(0.88);
   transform-origin: top left;
-  width: 125%; /* Compensate for 0.8 scale (100% / 0.8 = 125%) */
-  height: 125%; /* Scale the height as well to show full content */
+  width: 113.64%; /* Compensate for 0.88 scale (100% / 0.88 ≈ 113.64%) */
+  height: 113.64%; /* Scale the height as well to show full content */
   overflow-x: hidden;
   overflow-y: auto;
   min-height: 100%;

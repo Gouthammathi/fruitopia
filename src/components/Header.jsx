@@ -91,8 +91,8 @@ const Header = () => {
           <nav className="hidden lg:flex items-center gap-6 text-sm font-medium">
             {[
               { to: '/', label: 'Home', end: true },
-              { to: '/products', label: 'Fresh' },
               { to: '/plans', label: 'Plans' },
+              { to: '/products', label: 'Fresh' },
               { to: '/contact', label: 'Contact' },
             ].map((item) => (
                   <NavLink
@@ -219,10 +219,10 @@ const Header = () => {
             )}
           </div>
 
-          {/* Sidebar Toggle Button */}
+          {/* Sidebar Toggle Button - Mobile Only */}
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="p-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-all duration-200 ml-2"
+            className="lg:hidden p-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-all duration-200 ml-2"
             aria-label="Open menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -407,24 +407,6 @@ const Header = () => {
           <span className="text-xs font-medium">Home</span>
         </NavLink>
 
-        {/* Fresh/Products */}
-        <NavLink
-          to="/products"
-          onClick={() => scrollToTop('smooth')}
-          className={({ isActive }) => 
-            `flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all duration-200 ${
-              isActive 
-                ? 'text-emerald-600 bg-emerald-50' 
-                : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
-            }`
-          }
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-          </svg>
-          <span className="text-xs font-medium">Fresh</span>
-        </NavLink>
-
         {/* Plans */}
         <NavLink
           to="/plans"
@@ -441,6 +423,24 @@ const Header = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
           <span className="text-xs font-medium">Plans</span>
+        </NavLink>
+
+        {/* Fresh/Products */}
+        <NavLink
+          to="/products"
+          onClick={() => scrollToTop('smooth')}
+          className={({ isActive }) => 
+            `flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all duration-200 ${
+              isActive 
+                ? 'text-emerald-600 bg-emerald-50' 
+                : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
+            }`
+          }
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+          <span className="text-xs font-medium">Fresh</span>
         </NavLink>
 
         {/* Cart */}

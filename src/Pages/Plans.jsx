@@ -14,7 +14,7 @@ const PlanImageCarousel = ({ images, planType }) => {
   }, [images.length])
 
   return (
-    <div className="relative h-32 overflow-hidden rounded-t-2xl bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="relative h-40 sm:h-48 overflow-hidden rounded-t-2xl bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="w-full h-full" style={{
@@ -35,19 +35,21 @@ const PlanImageCarousel = ({ images, planType }) => {
                   : 'opacity-0 scale-95 translate-x-4'
               }`}
           >
-            <div className="text-4xl filter drop-shadow-lg">{image}</div>
+            <div className="text-5xl sm:text-6xl filter drop-shadow-lg">{image}</div>
           </div>
         ))}
       </div>
 
-      {/* Carousel indicators */}
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
+      {/* Minimal Carousel Indicators */}
+      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-1">
         {images.map((_, index) => (
-          <button
+          <div
             key={index}
-            onClick={() => setCurrentImage(index)}
-            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${index === currentImage ? 'bg-emerald-500 scale-125' : 'bg-white/60 hover:bg-white/80'
-              }`}
+            className={`transition-all duration-300 rounded-full ${
+              index === currentImage 
+                ? 'w-4 h-1 bg-emerald-600' 
+                : 'w-1 h-1 bg-slate-400/60'
+            }`}
           />
         ))}
       </div>
