@@ -237,50 +237,38 @@ const Header = () => {
     {/* Backdrop Overlay */}
     {isSidebarOpen && (
       <div 
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] transition-opacity duration-300"
+        className="fixed inset-0 bg-black/20 z-[60] transition-opacity duration-300"
         onClick={() => setIsSidebarOpen(false)}
         aria-hidden="true"
       />
     )}
 
-    {/* Professional Sidebar */}
+    {/* Minimal Sidebar */}
     <div 
-      className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-[70] transform transition-transform duration-300 ease-out ${
+      className={`fixed top-0 right-0 h-full w-72 max-w-[85vw] bg-white border-l border-slate-200 z-[70] transform transition-transform duration-300 ease-out ${
         isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
       <div className="h-full flex flex-col">
         {/* Sidebar Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-200 bg-gradient-to-r from-emerald-50 via-emerald-50 to-white">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </div>
-            <div>
-              <h2 className="font-bold text-lg text-slate-900">Menu</h2>
-              <p className="text-xs text-slate-600">Explore more</p>
-            </div>
-          </div>
+        <div className="flex items-center justify-between p-5 border-b border-slate-200">
+          <h2 className="text-lg font-semibold text-slate-900">Menu</h2>
           <button
             onClick={() => setIsSidebarOpen(false)}
-            className="p-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-all duration-200"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
             aria-label="Close sidebar"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Sidebar Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto py-4">
           
-          {/* Quick Links Section */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Quick Links</h3>
-            
+          {/* Navigation Links */}
+          <nav className="space-y-1 px-3">
             {/* Wishlist */}
             <button
               onClick={() => {
@@ -288,27 +276,17 @@ const Header = () => {
                 navigate('/wishlist')
                 scrollToTop('smooth')
               }}
-              className="w-full flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-pink-50 to-rose-50 hover:from-pink-100 hover:to-rose-100 transition-all duration-200 group border border-pink-100"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors text-left"
             >
-              <div className="relative flex-shrink-0">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform duration-200">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                </div>
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ring-2 ring-white">
-                    {wishlistCount}
-                  </span>
-                )}
-              </div>
-              <div className="flex-1 text-left">
-                <h4 className="font-semibold text-slate-900">Wishlist</h4>
-                <p className="text-sm text-slate-600">{wishlistCount} saved {wishlistCount === 1 ? 'item' : 'items'}</p>
-              </div>
-              <svg className="w-5 h-5 text-slate-400 group-hover:text-pink-600 group-hover:translate-x-1 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
+              <span className="flex-1 font-medium">Wishlist</span>
+              {wishlistCount > 0 && (
+                <span className="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full">
+                  {wishlistCount}
+                </span>
+              )}
             </button>
 
             {/* Cart */}
@@ -318,34 +296,22 @@ const Header = () => {
                 navigate('/cart')
                 scrollToTop('smooth')
               }}
-              className="w-full flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 transition-all duration-200 group border border-emerald-100"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors text-left"
             >
-              <div className="relative flex-shrink-0">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform duration-200">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ring-2 ring-white">
-                    {cartItemCount}
-                  </span>
-                )}
-              </div>
-              <div className="flex-1 text-left">
-                <h4 className="font-semibold text-slate-900">Shopping Cart</h4>
-                <p className="text-sm text-slate-600">{cartItemCount} {cartItemCount === 1 ? 'item' : 'items'}</p>
-              </div>
-              <svg className="w-5 h-5 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
+              <span className="flex-1 font-medium">Cart</span>
+              {cartItemCount > 0 && (
+                <span className="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full">
+                  {cartItemCount}
+                </span>
+              )}
             </button>
-          </div>
 
-          {/* Information Section */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Information</h3>
-            
+            {/* Divider */}
+            <div className="h-px bg-slate-200 my-3"></div>
+
             {/* About Us */}
             <button
               onClick={() => {
@@ -353,20 +319,12 @@ const Header = () => {
                 navigate('/about')
                 scrollToTop('smooth')
               }}
-              className="w-full flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 transition-all duration-200 group border border-blue-100"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors text-left"
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform duration-200">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="flex-1 text-left">
-                <h4 className="font-semibold text-slate-900">About Us</h4>
-                <p className="text-sm text-slate-600">Learn our story</p>
-              </div>
-              <svg className="w-5 h-5 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
+              <span className="flex-1 font-medium">About Us</span>
             </button>
 
             {/* Contact */}
@@ -376,54 +334,23 @@ const Header = () => {
                 navigate('/contact')
                 scrollToTop('smooth')
               }}
-              className="w-full flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-purple-50 to-violet-50 hover:from-purple-100 hover:to-violet-100 transition-all duration-200 group border border-purple-100"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors text-left"
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-violet-500 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform duration-200">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div className="flex-1 text-left">
-                <h4 className="font-semibold text-slate-900">Contact Us</h4>
-                <p className="text-sm text-slate-600">Get in touch</p>
-              </div>
-              <svg className="w-5 h-5 text-slate-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
+              <span className="flex-1 font-medium">Contact</span>
             </button>
-          </div>
-
-          {/* About Company Card */}
-          <div className="p-5 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200">
-            <div className="flex items-start gap-3 mb-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white flex-shrink-0 shadow-md">
-                🍏
-              </div>
-              <div>
-                <h4 className="font-semibold text-slate-900 mb-1">Fruitopia</h4>
-                <p className="text-xs text-slate-600">Fresh & Healthy</p>
-              </div>
-            </div>
-            <p className="text-sm text-slate-700 leading-relaxed">
-              We're passionate about bringing you the freshest, highest-quality fruits delivered right to your doorstep. Healthy eating made convenient!
-            </p>
-          </div>
+          </nav>
         </div>
 
         {/* Sidebar Footer */}
-        <div className="p-6 border-t border-slate-200 bg-white">
+        <div className="p-4 border-t border-slate-200">
           {user ? (
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white flex-shrink-0 shadow-md">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-900 truncate">{user.name}</p>
-                  <p className="text-sm text-slate-600 truncate">{user.email}</p>
-                </div>
+            <div className="space-y-2">
+              <div className="px-3 py-2 rounded-lg bg-slate-50">
+                <p className="text-sm font-medium text-slate-900 truncate">{user.name}</p>
+                <p className="text-xs text-slate-600 truncate">{user.email}</p>
               </div>
               <button
                 onClick={() => {
@@ -431,9 +358,9 @@ const Header = () => {
                   logout()
                   navigate('/')
                 }}
-                className="w-full flex items-center justify-center gap-2 p-3 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200 font-medium border border-red-200"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors text-sm font-medium"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
                 Logout
@@ -446,9 +373,9 @@ const Header = () => {
                 navigate('/login')
                 scrollToTop('smooth')
               }}
-              className="w-full flex items-center justify-center gap-2 p-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700 transition-all duration-200 shadow-lg font-semibold"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-colors text-sm font-medium"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
               </svg>
               Login / Sign Up
