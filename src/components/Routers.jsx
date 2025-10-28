@@ -13,6 +13,8 @@ import Wishlist from '../Pages/Wishlist'
 import Login from '../Pages/Login'
 import Signup from '../Pages/Signup'
 import Profile from '../Pages/Profile'
+import AdminLogin from './admin/AdminLogin'
+import AdminDashboard from './admin/AdminDashboard'
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
       { path: 'signup', element: <Signup /> },
       { path: 'profile', element: <Profile /> },
     ],
+  },
+  {
+    path: '/admin/login',
+    element: <AdminLogin />,
+  },
+  {
+    path: '/admin/dashboard',
+    element: <AdminDashboard />,
   },
 ])
 
