@@ -4,7 +4,6 @@ import { scrollToTop } from '../utils/scrollToTop'
 import { useApp } from '../context/AppContext'
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
@@ -41,24 +40,9 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY])
 
-  // Close mobile menu when clicking outside or when header is hidden
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isMenuOpen && !event.target.closest('.mobile-menu-container')) {
-        setIsMenuOpen(false)
-      }
-    }
-    
-    // Close mobile menu when header is hidden
-    if (!isHeaderVisible && isMenuOpen) {
-      setIsMenuOpen(false)
-    }
-    
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [isMenuOpen, isHeaderVisible])
 
   return (
+    <>
     <header className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
       isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
     } ${
@@ -235,168 +219,127 @@ const Header = () => {
               )}
             </button>
             
-            {/* Mobile Menu Toggle */}
-            <button 
-              className="p-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-all duration-200"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Toggle mobile menu"
-            >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div className={`lg:hidden mobile-menu-container transition-all duration-300 overflow-hidden ${
-        isMenuOpen 
-          ? 'max-h-[600px] bg-white/98 backdrop-blur-md border-b border-slate-200/60 shadow-lg' 
-          : 'max-h-0'
-      }`}>
-        <nav className="px-3 py-3 space-y-1">
-          {[
-            { to: '/', label: 'Home', end: true },
-            { to: '/products', label: 'Fresh' },
-            { to: '/plans', label: 'Plans' },
-            { to: '/contact', label: 'Contact' },
-          ].map((item) => (
-                <NavLink
-                  key={item.label}
-                  to={item.to}
-                  end={item.end}
-                  className={({ isActive }) => 
-                    `block px-3 py-2.5 rounded-lg transition-all duration-200 font-medium text-sm ${
-                      isActive 
-                        ? 'text-emerald-600 bg-emerald-50 font-semibold' 
-                        : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
-                    }`
-                  }
-                  onClick={() => {
-                    setIsMenuOpen(false)
-                    scrollToTop('smooth')
-                  }}
-                >
-                  {item.label}
-                </NavLink>
-          ))}
-          
-          {/* Mobile Games Button */}
-          <button
-            onClick={() => {
-              setIsMenuOpen(false)
-              window.open('http://fruitopiaa.vercel.app', '_blank')
-            }}
-            className="block w-full text-left px-3 py-2.5 rounded-lg transition-all duration-200 font-medium text-sm text-slate-600 hover:text-indigo-600 hover:bg-indigo-50"
-          >
-            <span className="flex items-center gap-2">
-              <span>🎮</span>
-              <span>Games</span>
-              <span className="text-xs text-gray-500">(Fruitopia Games)</span>
-            </span>
-          </button>
-          
-          {/* Mobile Icons */}
-          <div className="pt-3 border-t border-slate-200">
-            <div className="grid grid-cols-3 gap-1.5 mb-3">
-              {/* Wishlist */}
-              <button
+            {/* Login Button */}
+            {!user && (
+              <button 
                 onClick={() => {
-                  setIsMenuOpen(false)
-                  navigate('/wishlist')
+                  navigate('/login')
                   scrollToTop('smooth')
                 }}
-                className="flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-all"
+                className="p-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-all duration-200"
+                aria-label="Login"
               >
-                <div className="relative">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                  {wishlistCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-emerald-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                      {wishlistCount}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[10px]">Wishlist</span>
-              </button>
-
-              {/* Cart */}
-              <button
-                onClick={() => {
-                  setIsMenuOpen(false)
-                  navigate('/cart')
-                  scrollToTop('smooth')
-                }}
-                className="flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-all"
-              >
-                <div className="relative">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-emerald-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[10px]">Cart</span>
-              </button>
-
-              {/* Profile/Login */}
-              {user ? (
-                <button
-                  onClick={() => {
-                    setIsMenuOpen(false)
-                    navigate('/profile')
-                    scrollToTop('smooth')
-                  }}
-                  className="flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-all"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  <span className="text-[10px]">Profile</span>
-                </button>
-              ) : (
-                <button 
-                  onClick={() => {
-                    setIsMenuOpen(false)
-                    navigate('/login')
-                    scrollToTop('smooth')
-                  }}
-                  className="flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-all"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  <span className="text-[10px]">Login</span>
-                </button>
-              )}
-            </div>
-
-            {/* Logout button for logged in users */}
-            {user && (
-              <button
-                onClick={() => {
-                  setIsMenuOpen(false)
-                  logout()
-                  navigate('/')
-                }}
-                className="w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium"
-              >
-                Logout
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
               </button>
             )}
           </div>
-        </nav>
+        </div>
       </div>
     </header>
+
+    {/* Mobile Bottom Navigation */}
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-lg mobile-bottom-nav">
+      <nav className="flex items-center justify-around px-2 py-2">
+        {/* Home */}
+        <NavLink
+          to="/"
+          end
+          onClick={() => scrollToTop('smooth')}
+          className={({ isActive }) => 
+            `flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all duration-200 ${
+              isActive 
+                ? 'text-emerald-600 bg-emerald-50' 
+                : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
+            }`
+          }
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          <span className="text-xs font-medium">Home</span>
+        </NavLink>
+
+        {/* Fresh/Products */}
+        <NavLink
+          to="/products"
+          onClick={() => scrollToTop('smooth')}
+          className={({ isActive }) => 
+            `flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all duration-200 ${
+              isActive 
+                ? 'text-emerald-600 bg-emerald-50' 
+                : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
+            }`
+          }
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+          <span className="text-xs font-medium">Fresh</span>
+        </NavLink>
+
+        {/* Plans */}
+        <NavLink
+          to="/plans"
+          onClick={() => scrollToTop('smooth')}
+          className={({ isActive }) => 
+            `flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all duration-200 ${
+              isActive 
+                ? 'text-emerald-600 bg-emerald-50' 
+                : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
+            }`
+          }
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span className="text-xs font-medium">Plans</span>
+        </NavLink>
+
+        {/* Cart */}
+        <button
+          onClick={() => {
+            navigate('/cart')
+            scrollToTop('smooth')
+          }}
+          className="flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all duration-200 text-slate-600 hover:text-emerald-600 hover:bg-slate-50 relative"
+        >
+          <div className="relative">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            {cartItemCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-emerald-600 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                {cartItemCount}
+              </span>
+            )}
+          </div>
+          <span className="text-xs font-medium">Cart</span>
+        </button>
+
+        {/* Profile - Only show if user is logged in */}
+        {user && (
+          <NavLink
+            to="/profile"
+            onClick={() => scrollToTop('smooth')}
+            className={({ isActive }) => 
+              `flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-all duration-200 ${
+                isActive 
+                  ? 'text-emerald-600 bg-emerald-50' 
+                  : 'text-slate-600 hover:text-emerald-600 hover:bg-slate-50'
+              }`
+            }
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            <span className="text-xs font-medium">Profile</span>
+          </NavLink>
+        )}
+      </nav>
+    </div>
+    </>
   )
 }
 

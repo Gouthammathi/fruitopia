@@ -702,7 +702,12 @@ html {
     height: 40px !important;
   }
   
-  /* Mobile menu dropdown styling */
+  /* Mobile menu styling - updated for new design */
+  .mobile-menu-container {
+    width: 100vw !important;
+    max-width: 320px !important;
+  }
+  
   .mobile-menu-container > nav {
     padding: 1rem !important;
   }
@@ -710,20 +715,20 @@ html {
   /* Mobile menu links */
   .mobile-menu-container nav a,
   .mobile-menu-container nav button {
-    padding: 0.875rem 1rem !important;
-    font-size: 0.9375rem !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
     margin-bottom: 0.25rem !important;
   }
   
   /* Mobile action icons grid */
   .mobile-menu-container .grid {
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 0.5rem !important;
+    gap: 0.75rem !important;
   }
   
   /* Mobile icon buttons */
   .mobile-menu-container button.flex.flex-col {
-    padding: 0.75rem 0.5rem !important;
+    padding: 1rem 0.75rem !important;
     font-size: 0.75rem !important;
   }
   
@@ -737,6 +742,22 @@ html {
     width: 1.25rem !important;
     height: 1.25rem !important;
     font-size: 0.625rem !important;
+  }
+  
+  /* Mobile bottom navigation */
+  .mobile-bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Add padding to body when mobile nav is present */
+  body {
+    padding-bottom: 80px;
+  }
+  
+  @media (min-width: 1024px) {
+    body {
+      padding-bottom: 0;
+    }
   }
   
   /* Hide desktop navigation on mobile */
